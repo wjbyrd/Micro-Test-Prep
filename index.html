@@ -494,6 +494,29 @@
   </section>
 
 <script>
+  const menuMusic = new Audio("menu_music.wav");
+  menuMusic.loop = true;
+  menuMusic.volume = 0.12;
+  let menuMusicStarted = false;
+
+  function startMenuMusic(){
+    if(menuMusicStarted) return;
+
+    menuMusic.play()
+      .then(() => {
+        menuMusicStarted = true;
+      })
+      .catch(() => {
+        console.log("Menu music waiting for user interaction.");
+      });
+  }
+
+  function stopMenuMusic(){
+    menuMusic.pause();
+    menuMusic.currentTime = 0;
+    menuMusicStarted = false;
+  }
+
   const games = {
     loc: {
       title: "Labyrinth of Choice",
@@ -526,6 +549,10 @@
     setTimeout(() => {
       document.getElementById("splashScreen").classList.add("hidden");
       document.getElementById("mainMenu").classList.add("active");
+
+      startMenuMusic();
+      document.addEventListener("click", startMenuMusic, { once:true });
+      document.addEventListener("keydown", startMenuMusic, { once:true });
     }, 3000);
   });
 
@@ -550,6 +577,8 @@
   function selectGame(gameKey){
     selectedGame = gameKey;
     const game = games[gameKey];
+
+    startMenuMusic();
 
     document.getElementById("selectedGameTitle").innerText = game.title;
     document.getElementById("selectedGameText").innerText = "Enter your school email to begin " + game.title + ".";
@@ -589,6 +618,7 @@
     localStorage.setItem("gauntletEmail", email);
     localStorage.setItem("selectedGauntlet", selectedGame);
 
+    stopMenuMusic();
     window.location.href = games[selectedGame].file;
   }
 
