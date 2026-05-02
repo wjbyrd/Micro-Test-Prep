@@ -6,6 +6,7 @@
 <title>Micro Test Prep</title>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&display=swap');
   *{
     box-sizing:border-box;
   }
@@ -15,7 +16,7 @@
     min-height:100vh;
     background:#000;
     color:#fff;
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family:'Caudex', Georgia, 'Times New Roman', serif;
     overflow:hidden;
   }
 
@@ -153,10 +154,7 @@
     color:rgba(255,255,255,.58);
   }
 
-  .menu-title{
-    margin:0;
-    font-size:clamp(38px, 4.5vw, 70px);
-    font-weight:400;
+  .menu-title{$1font-weight:700;
     letter-spacing:.09em;
     text-transform:uppercase;
     color:#f4f4f4;
@@ -217,11 +215,7 @@
     flex-direction:column;
   }
 
-  .game-title{
-    margin:0 0 10px;
-    font-size:24px;
-    line-height:1.1;
-    font-weight:400;
+  .game-title{$1font-weight:700;
     letter-spacing:.08em;
     text-transform:uppercase;
     color:#fff;
@@ -356,10 +350,7 @@
     color:rgba(255,255,255,.52);
   }
 
-  .modal-title{
-    margin:0 0 10px;
-    font-size:30px;
-    font-weight:400;
+  .modal-title{$1font-weight:700;
     letter-spacing:.08em;
     text-transform:uppercase;
   }
@@ -478,7 +469,7 @@
           <div class="game-thumb" aria-hidden="true"></div>
           <div class="game-content">
             <h2 class="game-title">Labyrinth of Choice</h2>
-            <p class="game-tagline">Consumer choice, tradeoffs, and the logic of constrained decision-making.</p>
+            <p class="game-tagline">Utility, budget constraints, consumer choice, and demand.</p>
             <div class="topic-list">
               <span class="topic-chip">Budget Constraints</span>
               <span class="topic-chip">Indifference Curves</span>
@@ -492,29 +483,11 @@
           </div>
         </article>
 
-        <article class="game-card vault">
-          <div class="game-thumb" aria-hidden="true"></div>
-          <div class="game-content">
-            <h2 class="game-title">Strategic Vault</h2>
-            <p class="game-tagline">Oligopoly, game theory, pricing strategy, and rival reactions.</p>
-            <div class="topic-list">
-              <span class="topic-chip">Uncertainty</span>
-              <span class="topic-chip">Risk and Insurance</span>
-              <span class="topic-chip">Game Theory</span>
-              <span class="topic-chip">Strategy</span>
-            </div>
-            <div class="game-meta">
-              <div class="status-line"><span>Status</span><span class="status-value" id="status-vault">Ready</span></div>
-              <button class="enter-btn" onclick="selectGame('vault')">Enter Vault</button>
-            </div>
-          </div>
-        </article>
-
         <article class="game-card foundry">
           <div class="game-thumb" aria-hidden="true"></div>
           <div class="game-content">
             <h2 class="game-title">The Foundry</h2>
-            <p class="game-tagline">Production, costs, firms, shutdown rules, and competitive market pressure.</p>
+            <p class="game-tagline">Production, costs, profit maximization, supply, and perfect competition.</p>
             <div class="topic-list">
               <span class="topic-chip">Production</span>
               <span class="topic-chip">Costs</span>
@@ -532,13 +505,12 @@
           <div class="game-thumb" aria-hidden="true"></div>
           <div class="game-content">
             <h2 class="game-title">Dominion of Power</h2>
-            <p class="game-tagline">Market power, monopoly, externalities, equity, and strategic response.</p>
+            <p class="game-tagline">General equilibrium, welfare, monopoly, and imperfect competition.</p>
             <div class="topic-list">
               <span class="topic-chip">General Equilibrium</span>
               <span class="topic-chip">Welfare</span>
               <span class="topic-chip">Monopoly</span>
               <span class="topic-chip">Imperfect Competition</span>
-              
             </div>
             <div class="game-meta">
               <div class="status-line"><span>Status</span><span class="status-value" id="status-dominion">Ready</span></div>
@@ -546,7 +518,25 @@
             </div>
           </div>
         </article>
-     </section>
+
+        <article class="game-card vault">
+          <div class="game-thumb" aria-hidden="true"></div>
+          <div class="game-content">
+            <h2 class="game-title">Strategic Vault</h2>
+            <p class="game-tagline">Uncertainty, expected value, game theory, and strategic interaction.</p>
+            <div class="topic-list">
+              <span class="topic-chip">Uncertainty</span>
+              <span class="topic-chip">Expected Value</span>
+              <span class="topic-chip">Game Theory</span>
+              <span class="topic-chip">Strategic Interaction</span>
+            </div>
+            <div class="game-meta">
+              <div class="status-line"><span>Status</span><span class="status-value" id="status-vault">Ready</span></div>
+              <button class="enter-btn" onclick="selectGame('vault')">Enter Vault</button>
+            </div>
+          </div>
+        </article>
+      </section>
     </div>
   </main>
 
@@ -564,7 +554,7 @@
   </section>
 
 <script>
-  const menuMusic = new Audio("menu_music.mp3");
+  const menuMusic = new Audio("menu_music.wav");
   menuMusic.loop = true;
   menuMusic.volume = 0.12;
   let menuMusicStarted = false;
