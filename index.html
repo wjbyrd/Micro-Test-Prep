@@ -19,15 +19,15 @@
     overflow:hidden;
   }
 
-  /* =============================
-     SPLASH SCREEN
-     Uses your Canva/exported image as the title screen.
-     Put titlescreen.png in the same folder as index.html.
-  ============================= */
+  button,
+  input{
+    font:inherit;
+  }
+
   #splashScreen{
     position:fixed;
     inset:0;
-    z-index:10;
+    z-index:30;
     background:
       linear-gradient(rgba(0,0,0,.05), rgba(0,0,0,.05)),
       url('titlescreen.png');
@@ -56,21 +56,16 @@
     animation:statusPulse 1.8s ease-in-out infinite;
   }
 
-  /* =============================
-     MAIN MENU PLACEHOLDER
-  ============================= */
   #mainMenu{
     min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px;
+    padding:46px 44px;
     opacity:0;
     transform:translateY(12px);
     transition:opacity .9s ease, transform .9s ease;
     background:
-      radial-gradient(circle at center, rgba(60,80,120,.18), transparent 38%),
+      radial-gradient(circle at center, rgba(80,110,160,.18), transparent 38%),
       linear-gradient(180deg, #05070d, #000);
+    overflow-y:auto;
   }
 
   #mainMenu.active{
@@ -78,25 +73,281 @@
     transform:translateY(0);
   }
 
-  .menu-placeholder{
-    text-align:center;
-    max-width:900px;
+  .menu-shell{
+    width:min(1500px, 100%);
+    margin:0 auto;
   }
 
-  .menu-placeholder h1{
+  .menu-header{
+    text-align:center;
+    margin-bottom:34px;
+  }
+
+  .menu-kicker{
+    margin:0 0 8px;
+    font-size:13px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.58);
+  }
+
+  .menu-title{
+    margin:0;
+    font-size:clamp(38px, 4.5vw, 70px);
+    font-weight:400;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:#f4f4f4;
+    text-shadow:0 0 14px rgba(255,255,255,.20), 0 0 34px rgba(120,170,255,.13);
+  }
+
+  .menu-subtitle{
+    max-width:820px;
+    margin:14px auto 0;
+    font-size:16px;
+    line-height:1.5;
+    color:rgba(255,255,255,.68);
+    letter-spacing:.04em;
+  }
+
+  .game-grid{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:22px;
+  }
+
+  .game-card{
+    position:relative;
+    min-height:560px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:18px;
+    overflow:hidden;
+    background:rgba(4,6,12,.84);
+    box-shadow:0 18px 48px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+
+  .game-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,255,255,.32);
+    box-shadow:0 24px 64px rgba(0,0,0,.7), 0 0 30px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+
+  .game-thumb{
+    height:230px;
+    background-size:cover;
+    background-position:center;
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+
+  .game-thumb::after{
+    content:"";
+    display:block;
+    width:100%;
+    height:100%;
+    background:linear-gradient(180deg, transparent 35%, rgba(0,0,0,.62));
+  }
+
+  .game-content{
+    padding:22px 20px 20px;
+    display:flex;
+    min-height:330px;
+    flex-direction:column;
+  }
+
+  .game-title{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.1;
+    font-weight:400;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#fff;
+  }
+
+  .game-tagline{
     margin:0 0 16px;
-    font-size:clamp(36px, 5vw, 64px);
+    color:rgba(255,255,255,.64);
+    font-size:14px;
+    line-height:1.45;
+  }
+
+  .topic-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+
+  .topic-chip{
+    padding:7px 9px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.10);
+    color:rgba(255,255,255,.76);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .game-meta{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.10);
+  }
+
+  .status-line{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.56);
+  }
+
+  .status-value{
+    color:rgba(255,255,255,.86);
+  }
+
+  .enter-btn{
+    width:100%;
+    padding:13px 16px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.24);
+    background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
+    color:#fff;
+    cursor:pointer;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size:13px;
+    transition:transform .14s ease, background .14s ease, box-shadow .14s ease;
+  }
+
+  .enter-btn:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.08));
+    box-shadow:0 0 22px rgba(255,255,255,.10);
+  }
+
+  .loc{--accent:#38bdf8;}
+  .foundry{--accent:#f97316;}
+  .dominion{--accent:#ef4444;}
+  .vault{--accent:#22d3ee;}
+
+  .game-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, transparent), transparent 36%);
+    opacity:.26;
+  }
+
+  .game-card:hover .enter-btn{
+    border-color:color-mix(in srgb, var(--accent) 70%, white 20%);
+    box-shadow:0 0 24px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .loc .game-thumb{background-image:url('loc_thumbnail.png');}
+  .foundry .game-thumb{background-image:url('tf_thumbnail.png');}
+  .dominion .game-thumb{background-image:url('dop_thumbnail.png');}
+  .vault .game-thumb{background-image:url('sv_thumbnail.png');}
+
+  #emailModal{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(8px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .22s ease, visibility .22s ease;
+  }
+
+  #emailModal.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+  }
+
+  .modal-card{
+    width:min(520px, 100%);
+    border-radius:18px;
+    padding:28px;
+    background:radial-gradient(circle at top, rgba(255,255,255,.09), transparent 42%), rgba(5,7,12,.96);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 28px 80px rgba(0,0,0,.8);
+  }
+
+  .modal-label{
+    margin:0 0 8px;
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.52);
+  }
+
+  .modal-title{
+    margin:0 0 10px;
+    font-size:30px;
     font-weight:400;
     letter-spacing:.08em;
     text-transform:uppercase;
   }
 
-  .menu-placeholder p{
-    margin:0;
-    font-size:20px;
-    letter-spacing:.08em;
-    color:rgba(255,255,255,.72);
+  .modal-text{
+    margin:0 0 22px;
+    color:rgba(255,255,255,.66);
+    line-height:1.45;
+  }
+
+  .email-input{
+    width:100%;
+    padding:15px 16px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.22);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    outline:none;
+    margin-bottom:14px;
+  }
+
+  .email-input:focus{
+    border-color:rgba(255,255,255,.55);
+    box-shadow:0 0 20px rgba(255,255,255,.08);
+  }
+
+  .modal-actions{
+    display:flex;
+    gap:12px;
+  }
+
+  .modal-btn{
+    flex:1;
+    padding:13px 16px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.22);
+    color:#fff;
+    cursor:pointer;
+    letter-spacing:.1em;
     text-transform:uppercase;
+    font-size:12px;
+  }
+
+  .launch-btn{
+    background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.07));
+  }
+
+  .cancel-btn{
+    background:transparent;
+    color:rgba(255,255,255,.70);
   }
 
   @keyframes statusPulse{
@@ -104,11 +355,41 @@
     50%{opacity:.75;}
   }
 
-  @media(max-width:800px){
+  @media(max-width:1180px){
+    .game-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media(max-width:680px){
+    body{
+      overflow:auto;
+    }
+
+    #mainMenu{
+      padding:32px 18px;
+    }
+
+    .game-grid{
+      grid-template-columns:1fr;
+    }
+
+    .game-card{
+      min-height:auto;
+    }
+
+    .game-content{
+      min-height:auto;
+    }
+
     .splash-status{
       right:20px;
       bottom:18px;
       font-size:10px;
+    }
+
+    .modal-actions{
+      flex-direction:column;
     }
   }
 </style>
@@ -120,18 +401,205 @@
   </section>
 
   <main id="mainMenu" aria-label="Game selection menu">
-    <div class="menu-placeholder">
-      <h1>Choose Your Gauntlet</h1>
-      <p>Main menu cards come next.</p>
+    <div class="menu-shell">
+      <header class="menu-header">
+        <p class="menu-kicker">Microeconomics Review System</p>
+        <h1 class="menu-title">Choose Your Gauntlet</h1>
+        <p class="menu-subtitle">Select the dungeon you want to run. Each gauntlet targets a different set of concepts, adapts to your performance, and reports completion when you finish.</p>
+      </header>
+
+      <section class="game-grid" aria-label="Available review games">
+        <article class="game-card loc">
+          <div class="game-thumb" aria-hidden="true"></div>
+          <div class="game-content">
+            <h2 class="game-title">Labyrinth of Choice</h2>
+            <p class="game-tagline">Consumer choice, tradeoffs, and the logic of constrained decision-making.</p>
+            <div class="topic-list">
+              <span class="topic-chip">Budget Lines</span>
+              <span class="topic-chip">Indifference Curves</span>
+              <span class="topic-chip">Elasticity</span>
+            </div>
+            <div class="game-meta">
+              <div class="status-line"><span>Status</span><span class="status-value" id="status-loc">Ready</span></div>
+              <button class="enter-btn" onclick="selectGame('loc')">Enter Labyrinth</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card foundry">
+          <div class="game-thumb" aria-hidden="true"></div>
+          <div class="game-content">
+            <h2 class="game-title">The Foundry</h2>
+            <p class="game-tagline">Production, costs, firms, shutdown rules, and competitive market pressure.</p>
+            <div class="topic-list">
+              <span class="topic-chip">Production</span>
+              <span class="topic-chip">Costs</span>
+              <span class="topic-chip">Competition</span>
+            </div>
+            <div class="game-meta">
+              <div class="status-line"><span>Status</span><span class="status-value" id="status-foundry">Ready</span></div>
+              <button class="enter-btn" onclick="selectGame('foundry')">Enter Foundry</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card dominion">
+          <div class="game-thumb" aria-hidden="true"></div>
+          <div class="game-content">
+            <h2 class="game-title">Dominion of Power</h2>
+            <p class="game-tagline">Market power, monopoly, externalities, equity, and strategic response.</p>
+            <div class="topic-list">
+              <span class="topic-chip">Monopoly</span>
+              <span class="topic-chip">Externalities</span>
+              <span class="topic-chip">Equity</span>
+            </div>
+            <div class="game-meta">
+              <div class="status-line"><span>Status</span><span class="status-value" id="status-dominion">Ready</span></div>
+              <button class="enter-btn" onclick="selectGame('dominion')">Enter Dominion</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card vault">
+          <div class="game-thumb" aria-hidden="true"></div>
+          <div class="game-content">
+            <h2 class="game-title">Strategic Vault</h2>
+            <p class="game-tagline">Oligopoly, game theory, pricing strategy, and rival reactions.</p>
+            <div class="topic-list">
+              <span class="topic-chip">Game Theory</span>
+              <span class="topic-chip">Oligopoly</span>
+              <span class="topic-chip">Strategy</span>
+            </div>
+            <div class="game-meta">
+              <div class="status-line"><span>Status</span><span class="status-value" id="status-vault">Ready</span></div>
+              <button class="enter-btn" onclick="selectGame('vault')">Enter Vault</button>
+            </div>
+          </div>
+        </article>
+      </section>
     </div>
   </main>
 
+  <section id="emailModal" aria-label="Email entry dialog">
+    <div class="modal-card">
+      <p class="modal-label">Identity Required</p>
+      <h2 class="modal-title" id="selectedGameTitle">Begin Gauntlet</h2>
+      <p class="modal-text" id="selectedGameText">Enter your school email to begin.</p>
+      <input id="hubEmailInput" class="email-input" type="email" placeholder="Enter your school email" autocomplete="email" />
+      <div class="modal-actions">
+        <button class="modal-btn cancel-btn" onclick="closeEmailModal()">Cancel</button>
+        <button class="modal-btn launch-btn" onclick="launchSelectedGame()" id="launchButton">Launch</button>
+      </div>
+    </div>
+  </section>
+
 <script>
+  const games = {
+    loc: {
+      title: "Labyrinth of Choice",
+      file: "labyrinth-of-choice.html",
+      statusKey: "microHub_loc_complete"
+    },
+    foundry: {
+      title: "The Foundry",
+      file: "the-foundry.html",
+      statusKey: "microHub_foundry_complete"
+    },
+    dominion: {
+      title: "Dominion of Power",
+      file: "dominion-of-power.html",
+      statusKey: "microHub_dominion_complete"
+    },
+    vault: {
+      title: "Strategic Vault",
+      file: "strategic-vault.html",
+      statusKey: "microHub_vault_complete"
+    }
+  };
+
+  let selectedGame = null;
+
   window.addEventListener("load", () => {
+    restoreSavedEmail();
+    updateGameStatuses();
+
     setTimeout(() => {
       document.getElementById("splashScreen").classList.add("hidden");
       document.getElementById("mainMenu").classList.add("active");
     }, 3000);
+  });
+
+  function restoreSavedEmail(){
+    const savedEmail = localStorage.getItem("gauntletEmail") || "";
+    const input = document.getElementById("hubEmailInput");
+    if(input && savedEmail){
+      input.value = savedEmail;
+    }
+  }
+
+  function updateGameStatuses(){
+    Object.keys(games).forEach(key => {
+      const statusElement = document.getElementById("status-" + key);
+      if(!statusElement) return;
+
+      const completed = localStorage.getItem(games[key].statusKey) === "true";
+      statusElement.innerText = completed ? "Completed" : "Ready";
+    });
+  }
+
+  function selectGame(gameKey){
+    selectedGame = gameKey;
+    const game = games[gameKey];
+
+    document.getElementById("selectedGameTitle").innerText = game.title;
+    document.getElementById("selectedGameText").innerText = "Enter your school email to begin " + game.title + ".";
+    document.getElementById("launchButton").innerText = "Launch " + game.title;
+    document.getElementById("emailModal").classList.add("active");
+
+    setTimeout(() => {
+      document.getElementById("hubEmailInput").focus();
+    }, 100);
+  }
+
+  function closeEmailModal(){
+    document.getElementById("emailModal").classList.remove("active");
+    selectedGame = null;
+  }
+
+  function launchSelectedGame(){
+    if(!selectedGame || !games[selectedGame]){
+      alert("Select a gauntlet first.");
+      return;
+    }
+
+    const email = document.getElementById("hubEmailInput").value.trim().toLowerCase();
+    const atSymbol = email.indexOf("@");
+    const dotAfterAt = email.indexOf(".", atSymbol);
+
+    if(!email){
+      alert("Enter your school email.");
+      return;
+    }
+
+    if(atSymbol < 1 || dotAfterAt < atSymbol + 2){
+      alert("Enter a valid email address.");
+      return;
+    }
+
+    localStorage.setItem("gauntletEmail", email);
+    localStorage.setItem("selectedGauntlet", selectedGame);
+
+    window.location.href = games[selectedGame].file;
+  }
+
+  document.addEventListener("keydown", event => {
+    if(event.key === "Escape"){
+      closeEmailModal();
+    }
+
+    if(event.key === "Enter" && document.getElementById("emailModal").classList.contains("active")){
+      launchSelectedGame();
+    }
   });
 </script>
 </body>
