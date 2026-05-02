@@ -154,7 +154,10 @@
     color:rgba(255,255,255,.58);
   }
 
-  .menu-title{$1font-weight:700;
+  .menu-title{
+    margin:0;
+    font-size:clamp(38px, 4.5vw, 70px);
+    font-weight:700;
     letter-spacing:.09em;
     text-transform:uppercase;
     color:#f4f4f4;
@@ -215,7 +218,11 @@
     flex-direction:column;
   }
 
-  .game-title{$1font-weight:700;
+  .game-title{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.1;
+    font-weight:700;
     letter-spacing:.08em;
     text-transform:uppercase;
     color:#fff;
@@ -350,7 +357,10 @@
     color:rgba(255,255,255,.52);
   }
 
-  .modal-title{$1font-weight:700;
+  .modal-title{
+    margin:0 0 10px;
+    font-size:30px;
+    font-weight:700;
     letter-spacing:.08em;
     text-transform:uppercase;
   }
@@ -500,7 +510,7 @@
             </div>
           </div>
         </article>
-
+        
         <article class="game-card foundry">
           <div class="game-thumb" aria-hidden="true"></div>
           <div class="game-content">
@@ -536,22 +546,10 @@
             </div>
           </div>
         </article>
+
       </section>
     </div>
   </main>
-
-  <section id="emailModal" aria-label="Email entry dialog">
-    <div class="modal-card">
-      <p class="modal-label">Identity Required</p>
-      <h2 class="modal-title" id="selectedGameTitle">Begin Gauntlet</h2>
-      <p class="modal-text" id="selectedGameText">Enter your school email to begin.</p>
-      <input id="hubEmailInput" class="email-input" type="email" placeholder="Enter your school email" autocomplete="email" />
-      <div class="modal-actions">
-        <button class="modal-btn cancel-btn" onclick="closeEmailModal()">Cancel</button>
-        <button class="modal-btn launch-btn" onclick="launchSelectedGame()" id="launchButton">Launch</button>
-      </div>
-    </div>
-  </section>
 
 <script>
   const menuMusic = new Audio("menu_music.mp3");
@@ -660,60 +658,20 @@
       statusElement.innerText = completed ? "Completed" : "Ready";
     });
   }
-
   function selectGame(gameKey){
-    selectedGame = gameKey;
-    const game = games[gameKey];
-
-    document.getElementById("selectedGameTitle").innerText = game.title;
-    document.getElementById("selectedGameText").innerText = "Enter your school email to begin " + game.title + ".";
-    document.getElementById("launchButton").innerText = "Launch " + game.title;
-    document.getElementById("emailModal").classList.add("active");
-
-    setTimeout(() => {
-      document.getElementById("hubEmailInput").focus();
-    }, 100);
-  }
-
-  function closeEmailModal(){
-    document.getElementById("emailModal").classList.remove("active");
-    selectedGame = null;
-  }
-
-  function launchSelectedGame(){
-    if(!selectedGame || !games[selectedGame]){
+    if(!games[gameKey]){
       alert("Select a gauntlet first.");
       return;
     }
 
-    const email = document.getElementById("hubEmailInput").value.trim().toLowerCase();
-    const atSymbol = email.indexOf("@");
-    const dotAfterAt = email.indexOf(".", atSymbol);
-
-    if(!email){
-      alert("Enter your school email.");
-      return;
-    }
-
-    if(atSymbol < 1 || dotAfterAt < atSymbol + 2){
-      alert("Enter a valid email address.");
-      return;
-    }
-
-    localStorage.setItem("gauntletEmail", email);
-    localStorage.setItem("selectedGauntlet", selectedGame);
+    localStorage.setItem("selectedGauntlet", gameKey);
 
     stopMenuMusic();
-    window.location.href = games[selectedGame].file;
+    window.location.href = games[gameKey].file;
   }
-
   document.addEventListener("keydown", event => {
     if(event.key === "Escape"){
-      closeEmailModal();
-    }
-
-    if(event.key === "Enter" && document.getElementById("emailModal").classList.contains("active")){
-      launchSelectedGame();
+      stopMenuMusic();
     }
   });
 </script>
