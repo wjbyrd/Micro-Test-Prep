@@ -793,21 +793,6 @@
     }
   }
 
-  function updateGameStatuses(){
-    Object.keys(games).forEach(key => {
-      const statusElement = document.getElementById("status-" + key);
-      if(!statusElement) return;
-
-      const completed = localStorage.getItem(games[key].statusKey) === "true";
-      statusElement.innerText = completed ? "Completed" : "Ready";
-    });
-  }
-  function selectGame(gameKey){
-    if(!games[gameKey]){
-      alert("Select a gauntlet first.");
-      return;
-    }
-
 function showHelpButton(){
   const button = document.getElementById("helpButton");
   if(button){
@@ -822,6 +807,22 @@ function openHelpModal(){
 function closeHelpModal(){
   document.getElementById("helpModal").classList.remove("active");
 }
+
+  function updateGameStatuses(){
+    Object.keys(games).forEach(key => {
+      const statusElement = document.getElementById("status-" + key);
+      if(!statusElement) return;
+
+      const completed = localStorage.getItem(games[key].statusKey) === "true";
+      statusElement.innerText = completed ? "Completed" : "Ready";
+    });
+  }
+  
+function selectGame(gameKey){
+    if(!games[gameKey]){
+      alert("Select a gauntlet first.");
+      return;
+    }
 
     localStorage.setItem("selectedGauntlet", gameKey);
 
