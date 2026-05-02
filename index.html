@@ -56,6 +56,68 @@
     animation:statusPulse 1.8s ease-in-out infinite;
   }
 
+  .splash-enter{
+    position:fixed;
+    left:50%;
+    bottom:72px;
+    z-index:31;
+    transform:translateX(-50%);
+    display:none;
+    padding:14px 26px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.28);
+    background:rgba(0,0,0,.42);
+    color:rgba(255,255,255,.84);
+    cursor:pointer;
+    font-size:13px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    text-shadow:0 0 8px rgba(0,0,0,.8);
+    box-shadow:0 0 22px rgba(0,0,0,.55), inset 0 0 18px rgba(255,255,255,.04);
+    opacity:0;
+    transition:opacity .65s ease, transform .18s ease, border-color .18s ease, background .18s ease;
+  }
+
+  #splashScreen.ready .splash-enter{
+    display:block;
+    opacity:1;
+  }
+
+  .splash-enter:hover{
+    transform:translateX(-50%) translateY(-2px);
+    border-color:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+  }
+
+  .sound-toggle{
+    position:fixed;
+    right:28px;
+    bottom:24px;
+    z-index:12;
+    display:none;
+    padding:10px 13px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);
+    background:rgba(0,0,0,.46);
+    color:rgba(255,255,255,.72);
+    cursor:pointer;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    box-shadow:0 0 18px rgba(0,0,0,.45);
+  }
+
+  .sound-toggle.visible{
+    display:block;
+  }
+
+  .sound-toggle:hover{
+    color:#fff;
+    border-color:rgba(255,255,255,.42);
+    background:rgba(255,255,255,.08);
+  }
+
   #mainMenu{
     min-height:100vh;
     padding:46px 44px;
@@ -397,8 +459,11 @@
 
 <body>
   <section id="splashScreen" aria-label="Micro Test Prep splash screen">
-    <div class="splash-status">Initializing adaptive gauntlet...</div>
+    <button id="enterHubButton" class="splash-enter" onclick="enterHub()">Click to Enter</button>
+    <div class="splash-status" id="splashStatus">Initializing adaptive gauntlet...</div>
   </section>
+
+  <button id="soundToggle" class="sound-toggle" onclick="toggleMenuMusic()" aria-label="Toggle menu music">Sound Off</button>
 
   <main id="mainMenu" aria-label="Game selection menu">
     <div class="menu-shell">
@@ -499,15 +564,29 @@
   menuMusic.volume = 0.12;
   let menuMusicStarted = false;
 
-  function startMenuMusic(){
-    if(menuMusicStarted) return;
+  function showSoundToggle(){
+    const button = document.getElementById("soundToggle");
+    if(button){
+      button.classList.add("visible");
+    }
+  }
 
+  function updateSoundToggle(){
+    const button = document.getElementById("soundToggle");
+    if(!button) return;
+    button.innerText = menuMusicStarted ? "Sound On" : "Sound Off";
+  }
+
+  function startMenuMusic(){
     menuMusic.play()
       .then(() => {
         menuMusicStarted = true;
+        updateSoundToggle();
       })
-      .catch(() => {
-        console.log("Menu music waiting for user interaction.");
+      .catch(error => {
+        menuMusicStarted = false;
+        updateSoundToggle();
+        console.log("Menu music could not start yet:", error.message);
       });
   }
 
@@ -515,27 +594,36 @@
     menuMusic.pause();
     menuMusic.currentTime = 0;
     menuMusicStarted = false;
+    updateSoundToggle();
+  }
+
+  function toggleMenuMusic(){
+    if(menuMusicStarted){
+      stopMenuMusic();
+    } else {
+      startMenuMusic();
+    }
   }
 
   const games = {
     loc: {
       title: "Labyrinth of Choice",
-      file: "labyrinth-of-choice.html",
+      file: "https://wjbyrd.github.io/Labyrinth-of-Choice/",
       statusKey: "microHub_loc_complete"
     },
     foundry: {
       title: "The Foundry",
-      file: "the-foundry.html",
+      file: "https://wjbyrd.github.io/The-Foundry/",
       statusKey: "microHub_foundry_complete"
     },
     dominion: {
       title: "Dominion of Power",
-      file: "dominion-of-power.html",
+      file: "https://wjbyrd.github.io/Dominion-of-Power/",
       statusKey: "microHub_dominion_complete"
     },
     vault: {
       title: "Strategic Vault",
-      file: "strategic-vault.html",
+      file: "https://wjbyrd.github.io/Strategic-Vault/",
       statusKey: "microHub_vault_complete"
     }
   };
@@ -545,16 +633,20 @@
   window.addEventListener("load", () => {
     restoreSavedEmail();
     updateGameStatuses();
+    updateSoundToggle();
 
     setTimeout(() => {
-      document.getElementById("splashScreen").classList.add("hidden");
-      document.getElementById("mainMenu").classList.add("active");
-
-      startMenuMusic();
-      document.addEventListener("click", startMenuMusic, { once:true });
-      document.addEventListener("keydown", startMenuMusic, { once:true });
+      document.getElementById("splashScreen").classList.add("ready");
+      document.getElementById("splashStatus").innerText = "Gauntlet ready.";
     }, 3000);
   });
+
+  function enterHub(){
+    document.getElementById("splashScreen").classList.add("hidden");
+    document.getElementById("mainMenu").classList.add("active");
+    showSoundToggle();
+    startMenuMusic();
+  }
 
   function restoreSavedEmail(){
     const savedEmail = localStorage.getItem("gauntletEmail") || "";
@@ -577,8 +669,6 @@
   function selectGame(gameKey){
     selectedGame = gameKey;
     const game = games[gameKey];
-
-    startMenuMusic();
 
     document.getElementById("selectedGameTitle").innerText = game.title;
     document.getElementById("selectedGameText").innerText = "Enter your school email to begin " + game.title + ".";
