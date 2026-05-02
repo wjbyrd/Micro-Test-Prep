@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Micro Test Prep</title>
+
+<style>
+  *{
+    box-sizing:border-box;
+  }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:#000;
+    color:#fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    overflow:hidden;
+  }
+
+  /* =============================
+     SPLASH SCREEN
+     Uses your Canva/exported image as the title screen.
+     Put titlescreen.png in the same folder as index.html.
+  ============================= */
+  #splashScreen{
+    position:fixed;
+    inset:0;
+    z-index:10;
+    background:
+      linear-gradient(rgba(0,0,0,.05), rgba(0,0,0,.05)),
+      url('titlescreen.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    opacity:1;
+    transition:opacity 1s ease, visibility 1s ease;
+  }
+
+  #splashScreen.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+
+  .splash-status{
+    position:fixed;
+    right:34px;
+    bottom:26px;
+    font-size:13px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.55);
+    text-shadow:0 0 8px rgba(0,0,0,.8);
+    animation:statusPulse 1.8s ease-in-out infinite;
+  }
+
+  /* =============================
+     MAIN MENU PLACEHOLDER
+  ============================= */
+  #mainMenu{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .9s ease, transform .9s ease;
+    background:
+      radial-gradient(circle at center, rgba(60,80,120,.18), transparent 38%),
+      linear-gradient(180deg, #05070d, #000);
+  }
+
+  #mainMenu.active{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .menu-placeholder{
+    text-align:center;
+    max-width:900px;
+  }
+
+  .menu-placeholder h1{
+    margin:0 0 16px;
+    font-size:clamp(36px, 5vw, 64px);
+    font-weight:400;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .menu-placeholder p{
+    margin:0;
+    font-size:20px;
+    letter-spacing:.08em;
+    color:rgba(255,255,255,.72);
+    text-transform:uppercase;
+  }
+
+  @keyframes statusPulse{
+    0%,100%{opacity:.35;}
+    50%{opacity:.75;}
+  }
+
+  @media(max-width:800px){
+    .splash-status{
+      right:20px;
+      bottom:18px;
+      font-size:10px;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <section id="splashScreen" aria-label="Micro Test Prep splash screen">
+    <div class="splash-status">Initializing adaptive gauntlet...</div>
+  </section>
+
+  <main id="mainMenu" aria-label="Game selection menu">
+    <div class="menu-placeholder">
+      <h1>Choose Your Gauntlet</h1>
+      <p>Main menu cards come next.</p>
+    </div>
+  </main>
+
+<script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("splashScreen").classList.add("hidden");
+      document.getElementById("mainMenu").classList.add("active");
+    }, 3000);
+  });
+</script>
+</body>
+</html>
