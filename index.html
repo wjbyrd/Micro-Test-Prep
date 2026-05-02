@@ -119,6 +119,121 @@
     background:rgba(255,255,255,.08);
   }
 
+  .help-button{
+  position:fixed;
+  left:28px;
+  bottom:24px;
+  z-index:12;
+  display:none;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(0,0,0,.46);
+  color:rgba(255,255,255,.72);
+  cursor:pointer;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  box-shadow:0 0 18px rgba(0,0,0,.45);
+}
+
+.help-button.visible{
+  display:block;
+}
+
+.help-button:hover{
+  color:#fff;
+  border-color:rgba(255,255,255,.42);
+  background:rgba(255,255,255,.08);
+}
+
+#helpModal{
+  position:fixed;
+  inset:0;
+  z-index:25;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .22s ease, visibility .22s ease;
+}
+
+#helpModal.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.help-modal-card{
+  width:min(700px, 100%);
+  background:rgba(0,0,0,.96);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.8);
+  padding:24px 24px 22px;
+}
+
+.help-modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+.help-modal-title{
+  margin:0;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#fff;
+}
+
+.help-close-btn{
+  border:1px solid rgba(255,255,255,.20);
+  background:transparent;
+  color:rgba(255,255,255,.72);
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.help-close-btn:hover{
+  color:#fff;
+  border-color:rgba(255,255,255,.42);
+  background:rgba(255,255,255,.06);
+}
+
+.help-modal-body{
+  color:rgba(255,255,255,.82);
+  line-height:1.7;
+  font-size:16px;
+}
+
+.help-modal-body p{
+  margin:0 0 14px;
+}
+
+.help-modal-body ul{
+  margin:0 0 14px 20px;
+  padding:0;
+}
+
+.help-modal-body li{
+  margin-bottom:8px;
+}
+
   #mainMenu{
     min-height:100vh;
     padding:46px 44px;
@@ -466,6 +581,10 @@
 
   <button id="soundToggle" class="sound-toggle" onclick="toggleMenuMusic()" aria-label="Toggle menu music">Sound Off</button>
 
+  <button id="helpButton" class="help-button" onclick="openHelpModal()" aria-label="Open instructions">
+  How This Works
+  </button>
+
   <main id="mainMenu" aria-label="Game selection menu">
     <div class="menu-shell">
       <header class="menu-header">
@@ -550,6 +669,30 @@
       </section>
     </div>
   </main>
+
+<section id="helpModal" aria-label="Instructions dialog">
+  <div class="help-modal-card">
+    <div class="help-modal-header">
+      <h2 class="help-modal-title">How This Works</h2>
+      <button class="help-close-btn" onclick="closeHelpModal()" aria-label="Close instructions">Close ×</button>
+    </div>
+
+    <div class="help-modal-body">
+      <p>Choose a gauntlet to begin reviewing.</p>
+
+      <p>Each gauntlet focuses on a different part of the course and adapts to your performance as you play.</p>
+
+      <ul>
+        <li>Correct answers move you forward.</li>
+        <li>Missed questions may send you back or trigger review.</li>
+        <li>Boss rooms check whether you are ready to advance.</li>
+        <li>Completion is reported when you finish a gauntlet.</li>
+      </ul>
+
+      <p>When you enter a game, use your school email on that game’s start screen so your progress can be recorded.</p>
+    </div>
+  </div>
+</section>
 
 <script>
   const menuMusic = new Audio("menu_music.mp3");
@@ -638,6 +781,7 @@
     document.getElementById("splashScreen").classList.add("hidden");
     document.getElementById("mainMenu").classList.add("active");
     showSoundToggle();
+    showHelpButton();
     startMenuMusic();
   }
 
@@ -664,16 +808,41 @@
       return;
     }
 
+function showHelpButton(){
+  const button = document.getElementById("helpButton");
+  if(button){
+    button.classList.add("visible");
+  }
+}
+
+function openHelpModal(){
+  document.getElementById("helpModal").classList.add("active");
+}
+
+function closeHelpModal(){
+  document.getElementById("helpModal").classList.remove("active");
+}
+
     localStorage.setItem("selectedGauntlet", gameKey);
 
     stopMenuMusic();
     window.location.href = games[gameKey].file;
   }
-  document.addEventListener("keydown", event => {
-    if(event.key === "Escape"){
-      stopMenuMusic();
+  
+ document.addEventListener("keydown", event => {
+  if(event.key === "Escape"){
+    const helpModal = document.getElementById("helpModal");
+
+    if(helpModal.classList.contains("active")){
+      closeHelpModal();
+      return;
     }
-  });
+
+    stopMenuMusic();
+  }
+});
+
+ 
 </script>
 </body>
 </html>
