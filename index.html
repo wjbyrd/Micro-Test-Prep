@@ -288,6 +288,38 @@
     letter-spacing:.04em;
   }
 
+  #mainMenu{
+  position:relative;
+  overflow:hidden;
+}
+
+.menu-video-bg{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  object-fit:cover;
+  pointer-events:none;
+  z-index:1;
+  opacity:.3;
+  mix-blend-mode:screen;
+}
+
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,.55) 85%);
+  pointer-events:none;
+  z-index:1;
+}
+
+.menu-shell{
+  position:relative;
+  backdrop-filter: blur(1px);
+  z-index:2;
+}
+
   .game-grid{
     display:grid;
     grid-template-columns:repeat(4, minmax(0, 1fr));
@@ -586,6 +618,10 @@
   </button>
 
   <main id="mainMenu" aria-label="Game selection menu">
+    <div class="menu-overlay"></div>
+    <video class="menu-video-bg" autoplay muted loop playsinline aria-hidden="true">
+      <source src="menu_mist.mp4" type="video/mp4">
+    </video>
     <div class="menu-shell">
       <header class="menu-header">
         <p class="menu-kicker">Microeconomics Review System</p>
