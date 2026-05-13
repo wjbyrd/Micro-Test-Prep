@@ -39,6 +39,16 @@
     transition:opacity 1s ease, visibility 1s ease;
   }
 
+
+
+  @media (max-width: 768px){
+    #splashScreen{
+      background-image: url('titlescreen_mobile.png');
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
   #splashScreen.hidden{
     opacity:0;
     visibility:hidden;
@@ -49,11 +59,16 @@
     position:fixed;
     right:34px;
     bottom:26px;
+    padding:10px 14px;
+    border-radius:999px;
     font-size:13px;
     letter-spacing:1.5px;
     text-transform:uppercase;
-    color:rgba(255,255,255,.55);
-    text-shadow:0 0 8px rgba(0,0,0,.8);
+    color:rgba(18,35,64,.92);
+    background:rgba(255,248,235,.72);
+    border:1px solid rgba(32,65,110,.18);
+    text-shadow:none;
+    box-shadow:0 4px 18px rgba(0,0,0,.10);
     animation:statusPulse 1.8s ease-in-out infinite;
   }
 
@@ -262,11 +277,11 @@
   }
 
   .menu-kicker{
-    margin:0 0 8px;
-    font-size:13px;
-    letter-spacing:.24em;
+    margin:0 0 12px;
+    font-size:16px;
+    letter-spacing:.32em;
     text-transform:uppercase;
-    color:rgba(255,255,255,.58);
+    color:rgba(255,255,255,.78);
   }
 
   .menu-title{
@@ -287,6 +302,47 @@
     color:rgba(255,255,255,.68);
     letter-spacing:.04em;
   }
+
+.realm-status-panel{
+  width:min(680px, 100%);
+  margin:22px auto 0;
+  padding:15px 18px 16px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,.08), transparent 55%),
+    rgba(0,0,0,.36);
+  box-shadow:
+    0 0 24px rgba(255,255,255,.06),
+    inset 0 0 20px rgba(255,255,255,.035);
+  text-align:center;
+}
+
+.realm-status-label{
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.52);
+  margin-bottom:6px;
+}
+
+.realm-status-text{
+  font-size:22px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.92);
+  font-weight:700;
+}
+
+.realm-status-subtext{
+  max-width:560px;
+  margin:7px auto 0;
+  font-size:13px;
+  line-height:1.45;
+  color:rgba(255,255,255,.58);
+  letter-spacing:.04em;
+}
+
 
   #mainMenu{
   position:relative;
@@ -323,7 +379,7 @@
   .game-grid{
     display:grid;
     grid-template-columns:repeat(4, minmax(0, 1fr));
-    gap:22px;
+    gap:18px;
   }
 
   .game-card{
@@ -420,6 +476,10 @@
   .status-value{
     color:rgba(255,255,255,.86);
   }
+
+  .status-value[data-realm-state="restored"]{ color:#b7f7c5; }
+  .status-value[data-realm-state="contested"]{ color:#f7d982; }
+  .status-value[data-realm-state="unstable"]{ color:rgba(255,255,255,.68); }
 
   .enter-btn{
     width:100%;
@@ -627,9 +687,17 @@
         <p class="menu-kicker">Microeconomics Review System</p>
         <h1 class="menu-title">Choose Your Gauntlet</h1>
         <p class="menu-subtitle">Select the dungeon you want to run. Each gauntlet targets a different set of concepts, adapts to your performance, and reports completion when you finish.</p>
+
+        <div class="realm-status-panel" aria-label="Micro campaign status">
+          <div class="realm-status-label">Micro System Status</div>
+          <div id="realmStatusText" class="realm-status-text">0 of 4 gauntlets cleared</div>
+          <div id="realmStatusSubtext" class="realm-status-subtext">
+            The micro gauntlet system remains unbeaten. Complete each dungeon to secure the campaign.
+          </div>
+        </div>
       </header>
 
-      <section class="game-grid" aria-label="Available review games">
+      <section class="game-grid" aria-label="Available review gauntlets">
         <article class="game-card loc">
           <div class="game-thumb" aria-hidden="true"></div>
           <div class="game-content">
@@ -782,25 +850,44 @@
     loc: {
       title: "Labyrinth of Choice",
       file: "https://wjbyrd.github.io/Labyrinth-of-Choice/",
-      statusKey: "microHub_loc_complete"
-    },
-    foundry: {
-      title: "The Foundry",
-      file: "https://wjbyrd.github.io/The-Foundry/",
-      statusKey: "microHub_foundry_complete"
-    },
-    dominion: {
-      title: "Dominion of Power",
-      file: "https://wjbyrd.github.io/Dominion-of-Power/",
-      statusKey: "microHub_dominion_complete"
+      statusKey: "microHub_loc_complete",
+      startedKey: "microHub_loc_started",
+      roomKey: "microHub_loc_room",
+      unstableText: "Labyrinth Sealed",
+      contestedText: "Labyrinth Active",
+      restoredText: "Labyrinth Cleared"
     },
     vault: {
       title: "Strategic Vault",
       file: "https://wjbyrd.github.io/The-Strategic-Vault/",
-      statusKey: "microHub_vault_complete"
+      statusKey: "microHub_vault_complete",
+      startedKey: "microHub_vault_started",
+      roomKey: "microHub_vault_room",
+      unstableText: "Vault Locked",
+      contestedText: "Vault Contested",
+      restoredText: "Vault Cleared"
+    },
+    foundry: {
+      title: "The Foundry",
+      file: "https://wjbyrd.github.io/The-Foundry/",
+      statusKey: "microHub_foundry_complete",
+      startedKey: "microHub_foundry_started",
+      roomKey: "microHub_foundry_room",
+      unstableText: "Foundry Cold",
+      contestedText: "Foundry Running",
+      restoredText: "Foundry Cleared"
+    },
+    dominion: {
+      title: "Dominion of Power",
+      file: "https://wjbyrd.github.io/Dominion-of-Power/",
+      statusKey: "microHub_dominion_complete",
+      startedKey: "microHub_dominion_started",
+      roomKey: "microHub_dominion_room",
+      unstableText: "Dominion Unclaimed",
+      contestedText: "Dominion Contested",
+      restoredText: "Dominion Cleared"
     }
   };
-
   let selectedGame = null;
 
   window.addEventListener("load", () => {
@@ -810,7 +897,7 @@
 
     setTimeout(() => {
       document.getElementById("splashScreen").classList.add("ready");
-      document.getElementById("splashStatus").innerText = "Gauntlet ready.";
+      document.getElementById("splashStatus").innerText = "Game ready.";
     }, 3000);
   });
 
@@ -845,15 +932,68 @@ function closeHelpModal(){
   document.getElementById("helpModal").classList.remove("active");
 }
 
+  function pluralize(count, singular, plural){
+    return count === 1 ? singular : plural;
+  }
+
+  function getStorageFlag(key){
+    return localStorage.getItem(key) === "true";
+  }
+
   function updateGameStatuses(){
+    let clearedCount = 0;
+    let contestedCount = 0;
+    const totalGauntlets = Object.keys(games).length;
+
     Object.keys(games).forEach(key => {
       const statusElement = document.getElementById("status-" + key);
       if(!statusElement) return;
 
-      const completed = localStorage.getItem(games[key].statusKey) === "true";
-      statusElement.innerText = completed ? "Completed" : "Ready";
+      const game = games[key];
+      const completed = getStorageFlag(game.statusKey);
+      const started = getStorageFlag(game.startedKey);
+      const room = localStorage.getItem(game.roomKey);
+
+      if(completed){
+        statusElement.innerText = game.restoredText || "Cleared";
+        statusElement.dataset.realmState = "restored";
+        clearedCount++;
+      } else if(started){
+        statusElement.innerText = room ? `${game.contestedText || "Contested"} · Room ${room}` : (game.contestedText || "Contested");
+        statusElement.dataset.realmState = "contested";
+        contestedCount++;
+      } else {
+        statusElement.innerText = game.unstableText || "Unbeaten";
+        statusElement.dataset.realmState = "unstable";
+      }
     });
+
+    const realmStatus = document.getElementById("realmStatusText");
+    const realmSubtext = document.getElementById("realmStatusSubtext");
+
+    if(realmStatus){
+      realmStatus.innerText = `${clearedCount} of ${totalGauntlets} gauntlets cleared`;
+    }
+
+    if(realmSubtext){
+      if(clearedCount === totalGauntlets){
+        realmSubtext.innerText = "The micro campaign is cleared. Every dungeon has been beaten.";
+      } else if(clearedCount > 0 && contestedCount > 0){
+        realmSubtext.innerText =
+          `${clearedCount} ${pluralize(clearedCount, "gauntlet", "gauntlets")} cleared, ` +
+          `${contestedCount} ${pluralize(contestedCount, "gauntlet", "gauntlets")} contested. Finish the active runs to secure the campaign.`;
+      } else if(clearedCount > 0){
+        realmSubtext.innerText =
+          `${clearedCount} ${pluralize(clearedCount, "gauntlet", "gauntlets")} cleared. Keep pushing through the remaining dungeons.`;
+      } else if(contestedCount > 0){
+        realmSubtext.innerText =
+          `${contestedCount} ${pluralize(contestedCount, "gauntlet", "gauntlets")} contested. Complete the active run to mark it cleared.`;
+      } else {
+        realmSubtext.innerText = "The micro gauntlet system remains unbeaten. Complete each dungeon to secure the campaign.";
+      }
+    }
   }
+
   
 function selectGame(gameKey){
     if(!games[gameKey]){
@@ -862,6 +1002,7 @@ function selectGame(gameKey){
     }
 
     localStorage.setItem("selectedGauntlet", gameKey);
+    localStorage.setItem("selectedMission", gameKey);
 
     stopMenuMusic();
     window.location.href = games[gameKey].file;
@@ -884,3 +1025,4 @@ function selectGame(gameKey){
 </script>
 </body>
 </html>
+
