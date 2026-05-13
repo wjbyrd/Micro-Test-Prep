@@ -943,7 +943,7 @@ function closeHelpModal(){
   function updateGameStatuses(){
     let clearedCount = 0;
     let contestedCount = 0;
-    const totalGauntlets = Object.keys(games).length;
+    const totalDungeons = Object.keys(games).length;
 
     Object.keys(games).forEach(key => {
       const statusElement = document.getElementById("status-" + key);
@@ -972,22 +972,22 @@ function closeHelpModal(){
     const realmSubtext = document.getElementById("realmStatusSubtext");
 
     if(realmStatus){
-      realmStatus.innerText = `${clearedCount} of ${totalGauntlets} gauntlets cleared`;
+      realmStatus.innerText = `${clearedCount} of ${totalDungeons} dungeons cleared`;
     }
 
     if(realmSubtext){
-      if(clearedCount === totalGauntlets){
+      if(clearedCount === totalDungeons){
         realmSubtext.innerText = "The micro campaign is cleared. Every dungeon has been beaten.";
       } else if(clearedCount > 0 && contestedCount > 0){
         realmSubtext.innerText =
-          `${clearedCount} ${pluralize(clearedCount, "gauntlet", "gauntlets")} cleared, ` +
-          `${contestedCount} ${pluralize(contestedCount, "gauntlet", "gauntlets")} contested. Finish the active runs to secure the campaign.`;
+          `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared, ` +
+          `${contestedCount} ${pluralize(contestedCount, "dungeon", "dungeons")} contested. Finish the active runs to secure the campaign.`;
       } else if(clearedCount > 0){
         realmSubtext.innerText =
-          `${clearedCount} ${pluralize(clearedCount, "gauntlet", "gauntlets")} cleared. Keep pushing through the remaining dungeons.`;
+          `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared. Keep pushing through the remaining dungeons.`;
       } else if(contestedCount > 0){
         realmSubtext.innerText =
-          `${contestedCount} ${pluralize(contestedCount, "gauntlet", "gauntlets")} contested. Complete the active run to mark it cleared.`;
+          `${contestedCount} ${pluralize(contestedCount, "dungeon", "dungeons")} contested. Complete the active run to mark it cleared.`;
       } else {
         realmSubtext.innerText = "The micro gauntlet system remains unbeaten. Complete each dungeon to secure the campaign.";
       }
@@ -997,11 +997,11 @@ function closeHelpModal(){
   
 function selectGame(gameKey){
     if(!games[gameKey]){
-      alert("Select a gauntlet first.");
+      alert("Select a dungeon first.");
       return;
     }
 
-    localStorage.setItem("selectedGauntlet", gameKey);
+    localStorage.setItem("selectedDungeon", gameKey);
     localStorage.setItem("selectedMission", gameKey);
 
     stopMenuMusic();
