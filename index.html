@@ -662,6 +662,346 @@
       flex-direction:column;
     }
   }
+
+
+/* =========================================================
+   UPGRADE: Micro Dungeon Briefing + Menu System
+   - Ported from The Economic Realm hub structure.
+   - Keeps the fantasy dungeon style while adding compact status,
+     next dungeon guidance, recovery, card state hooks, and logs.
+   ========================================================= */
+.dungeon-menu-button{
+  position:fixed;
+  right:28px;
+  bottom:24px;
+  z-index:12;
+  display:none;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(247,217,130,.32);
+  background:rgba(0,0,0,.52);
+  color:rgba(255,238,190,.82);
+  cursor:pointer;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  box-shadow:0 0 18px rgba(0,0,0,.50), 0 0 18px rgba(247,217,130,.10);
+}
+
+.dungeon-menu-button.visible{display:block;}
+.dungeon-menu-button:hover{
+  color:#fff;
+  border-color:rgba(247,217,130,.62);
+  background:rgba(247,217,130,.10);
+}
+
+.briefing-folder{
+  width:min(760px, 100%);
+  margin:22px auto 0;
+  border-radius:18px;
+  border:1px solid rgba(247,217,130,.24);
+  background:
+    linear-gradient(135deg, rgba(247,217,130,.10), transparent 38%),
+    radial-gradient(circle at top, rgba(255,255,255,.08), transparent 55%),
+    rgba(0,0,0,.40);
+  box-shadow:
+    0 0 26px rgba(247,217,130,.10),
+    0 0 48px rgba(0,0,0,.50),
+    inset 0 0 24px rgba(255,255,255,.03);
+  overflow:hidden;
+}
+
+.briefing-folder-header{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  border:none;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+  text-align:left;
+}
+
+.briefing-folder-label{
+  font-size:10px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:rgba(255,238,190,.52);
+  margin-bottom:5px;
+}
+
+.briefing-folder-title{
+  font-size:20px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(255,250,235,.95);
+  font-weight:700;
+  text-shadow:0 0 16px rgba(247,217,130,.22);
+}
+
+.briefing-folder-subtext{
+  margin-top:5px;
+  font-size:13px;
+  letter-spacing:.06em;
+  color:rgba(255,238,210,.64);
+}
+
+.briefing-folder-toggle{
+  flex:0 0 auto;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(247,217,130,.24);
+  color:rgba(255,238,210,.74);
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.briefing-folder-body{display:none; padding:0 18px 18px;}
+.briefing-folder.open .briefing-folder-body{display:block;}
+
+.briefing-section{
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(247,217,130,.15);
+  background:
+    linear-gradient(180deg, rgba(247,217,130,.07), rgba(255,255,255,.025)),
+    rgba(0,0,0,.28);
+  text-align:center;
+}
+
+.briefing-section-label{
+  font-size:10px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(255,238,190,.48);
+  margin-bottom:6px;
+}
+
+.next-dungeon-title{
+  font-size:18px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:rgba(255,255,255,.94);
+}
+
+.next-dungeon-reason{
+  max-width:580px;
+  margin:6px auto 11px;
+  font-size:13px;
+  line-height:1.4;
+  color:rgba(255,238,210,.66);
+  letter-spacing:.04em;
+}
+
+.next-dungeon-button{
+  padding:10px 15px;
+  border-radius:999px;
+  border:1px solid rgba(247,217,130,.28);
+  background:linear-gradient(180deg, rgba(247,217,130,.16), rgba(255,255,255,.05));
+  color:rgba(255,255,255,.88);
+  cursor:pointer;
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.next-dungeon-button:hover{
+  color:#fff;
+  border-color:rgba(247,217,130,.56);
+  box-shadow:0 0 20px rgba(247,217,130,.12);
+}
+
+.next-dungeon-button:disabled{opacity:.48; cursor:default;}
+
+.dungeon-narrative-text{
+  max-width:640px;
+  margin:0 auto;
+  font-size:13px;
+  line-height:1.45;
+  color:rgba(255,238,210,.68);
+  letter-spacing:.045em;
+}
+
+.mission-briefing{
+  margin:-6px 0 14px;
+  font-size:13px;
+  line-height:1.35;
+  color:rgba(255,238,210,.55);
+  letter-spacing:.045em;
+}
+
+.restored-badge{
+  display:none;
+  margin:0 0 14px;
+  padding:9px 11px;
+  border-radius:12px;
+  border:1px solid rgba(247,217,130,.34);
+  background:
+    radial-gradient(circle at left, rgba(247,217,130,.18), transparent 58%),
+    rgba(255,255,255,.055);
+  color:rgba(255,255,255,.84);
+  font-size:12px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.game-card.restored{
+  border-color:rgba(183,247,197,.50);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.72),
+    0 0 34px rgba(183,247,197,.18),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+.game-card.contested{
+  border-color:rgba(247,217,130,.48);
+  box-shadow:
+    0 20px 54px rgba(0,0,0,.66),
+    0 0 26px rgba(247,217,130,.16),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+.game-card.unstable{filter:saturate(.94);}
+.game-card.locked{opacity:.54; filter:grayscale(.35) saturate(.65);}
+.game-card.locked .enter-btn{cursor:not-allowed; opacity:.55;}
+.game-card.restored .restored-badge{display:block;}
+
+.game-thumb{position:relative;}
+.game-card.restored .game-thumb::before,
+.game-card.contested .game-thumb::before,
+.game-card.locked .game-thumb::before{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:2;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:700;
+  backdrop-filter:blur(6px);
+}
+
+.game-card.restored .game-thumb::before{
+  content:"Cleared";
+  color:rgba(255,255,255,.94);
+  border:1px solid rgba(183,247,197,.50);
+  background:linear-gradient(180deg, rgba(34,197,94,.24), rgba(0,0,0,.42));
+}
+
+.game-card.contested .game-thumb::before{
+  content:"Active";
+  color:rgba(255,255,255,.90);
+  border:1px solid rgba(247,217,130,.42);
+  background:linear-gradient(180deg, rgba(247,217,130,.22), rgba(0,0,0,.42));
+}
+
+.game-card.locked .game-thumb::before{
+  content:"Sealed";
+  color:rgba(255,255,255,.70);
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(0,0,0,.52);
+}
+
+.dungeon-menu-modal{
+  position:fixed;
+  inset:0;
+  z-index:25;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(0,0,0,.74);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .22s ease, visibility .22s ease;
+}
+
+.dungeon-menu-modal.active{opacity:1; visibility:visible; pointer-events:auto;}
+
+.dungeon-menu-card{
+  width:min(840px, 100%);
+  max-height:85vh;
+  overflow:auto;
+  background:rgba(0,0,0,.96);
+  border:1px solid rgba(247,217,130,.26);
+  border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.8), 0 0 30px rgba(247,217,130,.10);
+  padding:24px;
+}
+
+.dungeon-menu-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+.dungeon-menu-title{margin:0; font-size:28px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;}
+.dungeon-menu-actions{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px;}
+.dungeon-menu-action{
+  padding:10px 13px;
+  border-radius:999px;
+  border:1px solid rgba(247,217,130,.20);
+  background:rgba(247,217,130,.075);
+  color:rgba(255,255,255,.82);
+  cursor:pointer;
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+.dungeon-menu-action:hover{border-color:rgba(247,217,130,.50); color:#fff;}
+
+.dungeon-panel{display:none; color:rgba(255,255,255,.82); line-height:1.65; font-size:16px;}
+.dungeon-panel.active{display:block;}
+.dungeon-panel p{margin:0 0 14px;}
+.dungeon-panel ul{margin:0 0 14px 20px; padding:0;}
+.dungeon-panel li{margin-bottom:8px;}
+
+.dungeon-log-entry{
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+.dungeon-log-entry:last-child{border-bottom:none;}
+.dungeon-log-title{font-weight:700; color:rgba(255,238,190,.92);}
+.dungeon-log-meta{font-size:12px; color:rgba(255,255,255,.52); margin-top:3px;}
+
+.recovery-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+.recovery-grid select,
+.recovery-grid input{
+  width:100%;
+  padding:12px 13px;
+  border-radius:10px;
+  border:1px solid rgba(247,217,130,.22);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+}
+.recovery-message{margin-top:10px; color:rgba(255,238,190,.86); font-size:14px;}
+
+@media(max-width:680px){
+  .briefing-folder-header{align-items:flex-start;}
+  .briefing-folder-toggle{margin-top:2px;}
+  .recovery-grid{grid-template-columns:1fr;}
+  .dungeon-menu-card{padding:20px;}
+}
+
 </style>
 </head>
 
@@ -677,6 +1017,10 @@
   How This Works
   </button>
 
+  <button id="dungeonMenuButton" class="dungeon-menu-button" onclick="openDungeonMenu()" aria-label="Open dungeon menu">
+    Dungeon Menu
+  </button>
+
   <main id="mainMenu" aria-label="Game selection menu">
     <div class="menu-overlay"></div>
     <video class="menu-video-bg" autoplay muted loop playsinline aria-hidden="true">
@@ -688,11 +1032,34 @@
         <h1 class="menu-title">Choose Your Dungeon</h1>
         <p class="menu-subtitle">Select the dungeon you want to run. Each dungeon targets a different set of concepts, adapts to your performance, and reports completion when you finish.</p>
 
-        <div class="realm-status-panel" aria-label="Micro campaign status">
-          <div class="realm-status-label">Micro Gauntlet Status</div>
-          <div id="realmStatusText" class="realm-status-text">0 of 4 dungeons cleared</div>
-          <div id="realmStatusSubtext" class="realm-status-subtext">
-            The Micro Gauntlet remains unbeaten. Complete each dungeon to secure victory.
+        <div class="briefing-folder collapsed" id="briefingFolder">
+          <button class="briefing-folder-header" onclick="toggleBriefingFolder()" aria-expanded="false" aria-controls="briefingFolderBody">
+            <div>
+              <div class="briefing-folder-label">Dungeon Briefing</div>
+              <div id="briefingFolderTitle" class="briefing-folder-title">0 of 4 dungeons cleared</div>
+              <div id="briefingFolderSubtext" class="briefing-folder-subtext">Next Dungeon: Labyrinth of Choice</div>
+            </div>
+            <span id="briefingFolderToggle" class="briefing-folder-toggle">Open</span>
+          </button>
+
+          <div class="briefing-folder-body" id="briefingFolderBody">
+            <div id="nextDungeonBox" class="briefing-section next-dungeon-box">
+              <div class="briefing-section-label">Next Dungeon</div>
+              <div id="nextDungeonTitle" class="next-dungeon-title">Labyrinth of Choice</div>
+              <div id="nextDungeonReason" class="next-dungeon-reason">
+                Start with consumer choice, tradeoffs, demand, and elasticity before moving deeper into the micro system.
+              </div>
+              <button id="nextDungeonButton" class="next-dungeon-button" onclick="launchNextDungeon()">
+                Begin Next Dungeon
+              </button>
+            </div>
+
+            <div id="dungeonNarrativeBox" class="briefing-section dungeon-narrative-box">
+              <div class="briefing-section-label">Campaign Briefing</div>
+              <div id="dungeonNarrativeText" class="dungeon-narrative-text">
+                The dungeons are unbeaten. Clear each one to lock down the Micro Gauntlet.
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -703,6 +1070,8 @@
           <div class="game-content">
             <h2 class="game-title">Labyrinth of Choice</h2>
             <p class="game-tagline">Choose under pressure: limited budgets, changing prices, and the tradeoffs behind demand.</p>
+            <p class="mission-briefing" id="briefing-loc">Open dungeon. Start here with budget constraints, demand, indifference curves, and elasticity.</p>
+            <div class="restored-badge" id="badge-loc">Labyrinth cleared · Dungeon secured</div>
             <div class="topic-list">
               <span class="topic-chip">Budget Constraints</span>
               <span class="topic-chip">Demand</span>
@@ -721,6 +1090,8 @@
           <div class="game-content">
             <h2 class="game-title">Strategic Vault</h2>
             <p class="game-tagline">Think like a strategist: weigh risk, predict rivals, and choose when the outcome depends on more than you.</p>
+            <p class="mission-briefing" id="briefing-vault">Open dungeon. Risk, insurance, game theory, and strategic interaction are waiting inside.</p>
+            <div class="restored-badge" id="badge-vault">Vault cleared · Dungeon secured</div>
             <div class="topic-list">
               <span class="topic-chip">Uncertainty</span>
               <span class="topic-chip">Risk and Insurance</span>
@@ -739,6 +1110,8 @@
           <div class="game-content">
             <h2 class="game-title">The Foundry</h2>
             <p class="game-tagline">Run the firm: manage production, control costs, and decide when competition makes profit possible.</p>
+            <p class="mission-briefing" id="briefing-foundry">Open dungeon. Production, costs, profit maximization, and perfect competition run hot here.</p>
+            <div class="restored-badge" id="badge-foundry">Foundry cleared · Dungeon secured</div>
             <div class="topic-list">
               <span class="topic-chip">Production</span>
               <span class="topic-chip">Profit Maximization</span>
@@ -757,6 +1130,8 @@
           <div class="game-content">
             <h2 class="game-title">Dominion of Power</h2>
             <p class="game-tagline">Confront market power: monopoly, welfare, and the imperfect worlds where efficiency starts to crack.</p>
+            <p class="mission-briefing" id="briefing-dominion">Open dungeon. General equilibrium, welfare, monopoly, and imperfect competition hold the final gate.</p>
+            <div class="restored-badge" id="badge-dominion">Dominion cleared · Dungeon secured</div>
             <div class="topic-list">
               <span class="topic-chip">General Equilibrium</span>
               <span class="topic-chip">Welfare</span>
@@ -795,6 +1170,53 @@
       </ul>
 
       <p>When you enter a dungeon, use your school email on that game’s start screen so your progress can be recorded.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dungeonMenuModal" class="dungeon-menu-modal" aria-label="Dungeon menu dialog">
+  <div class="dungeon-menu-card">
+    <div class="dungeon-menu-header">
+      <h2 class="dungeon-menu-title">Dungeon Menu</h2>
+      <button class="help-close-btn" onclick="closeDungeonMenu()" aria-label="Close dungeon menu">Close ×</button>
+    </div>
+
+    <div class="dungeon-menu-actions">
+      <button class="dungeon-menu-action" onclick="showDungeonPanel('instructionsPanel')">How This Works</button>
+      <button class="dungeon-menu-action" onclick="showDungeonPanel('dungeonLogPanel')">Dungeon Log</button>
+      <button class="dungeon-menu-action" onclick="showDungeonPanel('recoveryPanel')">Recover Progress</button>
+      <button class="dungeon-menu-action" onclick="toggleMenuMusic()">Toggle Sound</button>
+    </div>
+
+    <div id="instructionsPanel" class="dungeon-panel active">
+      <p>Choose a dungeon to begin reviewing. Each dungeon targets a different part of microeconomics and adapts to your performance as you play.</p>
+      <ul>
+        <li>Correct answers move you forward.</li>
+        <li>Missed questions may send you back or trigger review.</li>
+        <li>Boss rooms check whether you are ready to advance.</li>
+        <li>Completion is reported when you finish a dungeon.</li>
+        <li>Progress is saved locally, so you can close the browser and resume later.</li>
+      </ul>
+      <p>Use your school email on the game start screen so the run can be recorded.</p>
+    </div>
+
+    <div id="dungeonLogPanel" class="dungeon-panel">
+      <div id="dungeonLogContent">No dungeon activity recorded yet.</div>
+    </div>
+
+    <div id="recoveryPanel" class="dungeon-panel">
+      <p>If a browser wipe removes local progress, use the completion recovery code from the finished dungeon to restore the cleared dungeon on this device.</p>
+      <div class="recovery-grid">
+        <select id="recoveryDungeon">
+          <option value="loc">Labyrinth of Choice</option>
+          <option value="vault">Strategic Vault</option>
+          <option value="foundry">The Foundry</option>
+          <option value="dominion">Dominion of Power</option>
+        </select>
+        <input id="recoveryCode" type="text" placeholder="Enter recovery code">
+      </div>
+      <button class="next-dungeon-button" style="margin-top:12px;" onclick="restoreDungeonFromCode()">Restore Dungeon</button>
+      <div id="recoveryMessage" class="recovery-message"></div>
     </div>
   </div>
 </section>
@@ -850,7 +1272,15 @@
     loc: {
       title: "Labyrinth of Choice",
       file: "https://wjbyrd.github.io/Labyrinth-of-Choice/",
-      statusKey: "microHub_loc_complete",
+      artifactText: "Labyrinth cleared · Dungeon secured",
+      sequence: 1,
+      buttonText: "Enter Labyrinth",
+      nextReason: "Start with consumer choice, budget constraints, demand, indifference curves, and elasticity. This is the front gate. Kick it open.",
+      storyIntro: "The Labyrinth of Choice is the first gate. Budgets are tight, tradeoffs are ugly, and demand does not care about excuses.",
+      storyActive: "The Labyrinth is active. Choices are being made under pressure. Finish the run and clear the path.",
+      storyRestored: "The Labyrinth is cleared. Consumer choice, demand, and elasticity are under control.",
+      recoveryCode: "LABYRINTH-CLEARED",
+
       startedKey: "microHub_loc_started",
       roomKey: "microHub_loc_room",
       unstableText: "Labyrinth Sealed",
@@ -860,7 +1290,15 @@
     vault: {
       title: "Strategic Vault",
       file: "https://wjbyrd.github.io/The-Strategic-Vault/",
-      statusKey: "microHub_vault_complete",
+      artifactText: "Vault cleared · Dungeon secured",
+      sequence: 2,
+      buttonText: "Enter Vault",
+      nextReason: "Move into uncertainty, risk, insurance, game theory, and strategic interaction. The easy part is over.",
+      storyIntro: "The Strategic Vault is waiting. Risk, rivals, and hidden payoffs are locked behind the door.",
+      storyActive: "The Strategic Vault is active. Every choice depends on what someone else might do next.",
+      storyRestored: "The Strategic Vault is cleared. Risk and strategy have been contained.",
+      recoveryCode: "VAULT-CLEARED",
+
       startedKey: "microHub_vault_started",
       roomKey: "microHub_vault_room",
       unstableText: "Vault Locked",
@@ -870,7 +1308,15 @@
     foundry: {
       title: "The Foundry",
       file: "https://wjbyrd.github.io/The-Foundry/",
-      statusKey: "microHub_foundry_complete",
+      artifactText: "Foundry cleared · Dungeon secured",
+      sequence: 3,
+      buttonText: "Enter Foundry",
+      nextReason: "Take on production, costs, profit maximization, and perfect competition. Time to run the firm without burning it down.",
+      storyIntro: "The Foundry is cold. Production choices, cost curves, and profit logic need heat.",
+      storyActive: "The Foundry is running. Costs are rising, output is moving, and profit is not going to find itself.",
+      storyRestored: "The Foundry is cleared. Production and cost logic are back under control.",
+      recoveryCode: "FOUNDRY-CLEARED",
+
       startedKey: "microHub_foundry_started",
       roomKey: "microHub_foundry_room",
       unstableText: "Foundry Cold",
@@ -880,7 +1326,15 @@
     dominion: {
       title: "Dominion of Power",
       file: "https://wjbyrd.github.io/Dominion-of-Power/",
-      statusKey: "microHub_dominion_complete",
+      artifactText: "Dominion cleared · Dungeon secured",
+      sequence: 4,
+      buttonText: "Enter Dominion",
+      nextReason: "Finish with welfare, monopoly, general equilibrium, and imperfect competition. Market power gets the last word unless you shut it down.",
+      storyIntro: "The Dominion of Power is the final gate. Monopoly and imperfect competition are sitting on the throne like they own the place.",
+      storyActive: "The Dominion is active. Market power is distorting outcomes and pretending it is efficient. Cute.",
+      storyRestored: "The Dominion is cleared. Market power has been checked and the Micro Gauntlet is secured.",
+      recoveryCode: "DOMINION-CLEARED",
+
       startedKey: "microHub_dominion_started",
       roomKey: "microHub_dominion_room",
       unstableText: "Dominion Unclaimed",
@@ -889,10 +1343,14 @@
     }
   };
   let selectedGame = null;
+  let nextDungeonKey = null;
+  const HUB_SAVE_KEY = "microHub_save_v1";
 
   window.addEventListener("load", () => {
     restoreSavedEmail();
+    syncHubSaveFromExistingKeys();
     updateGameStatuses();
+    restoreBriefingFolderState();
     updateSoundToggle();
 
     setTimeout(() => {
@@ -904,8 +1362,7 @@
   function enterHub(){
     document.getElementById("splashScreen").classList.add("hidden");
     document.getElementById("mainMenu").classList.add("active");
-    showSoundToggle();
-    showHelpButton();
+    showDungeonMenuButton();
     startMenuMusic();
   }
 
@@ -932,6 +1389,105 @@ function closeHelpModal(){
   document.getElementById("helpModal").classList.remove("active");
 }
 
+
+  function showDungeonMenuButton(){
+    const button = document.getElementById("dungeonMenuButton");
+    if(button){ button.classList.add("visible"); }
+  }
+
+  function openDungeonMenu(){
+    renderDungeonLog();
+    document.getElementById("dungeonMenuModal").classList.add("active");
+  }
+
+  function closeDungeonMenu(){
+    document.getElementById("dungeonMenuModal").classList.remove("active");
+  }
+
+  function showDungeonPanel(panelId){
+    document.querySelectorAll(".dungeon-panel").forEach(panel => panel.classList.remove("active"));
+    const panel = document.getElementById(panelId);
+    if(panel){ panel.classList.add("active"); }
+    if(panelId === "dungeonLogPanel"){ renderDungeonLog(); }
+  }
+
+  function getHubSave(){
+    try { return JSON.parse(localStorage.getItem(HUB_SAVE_KEY) || '{"missions":{},"log":[]}'); }
+    catch(error){ return { missions:{}, log:[] }; }
+  }
+
+  function setHubSave(save){
+    localStorage.setItem(HUB_SAVE_KEY, JSON.stringify(save));
+  }
+
+  function recordDungeonProgress(gameKey, details = {}){
+    const game = games[gameKey];
+    if(!game) return;
+
+    const save = getHubSave();
+    save.missions = save.missions || {};
+    save.log = save.log || [];
+
+    save.missions[gameKey] = {
+      started: details.started ?? getStorageFlag(game.startedKey),
+      completed: details.completed ?? getStorageFlag(game.statusKey),
+      room: details.room ?? localStorage.getItem(game.roomKey) ?? null,
+      updatedAt: Date.now()
+    };
+
+    if(details.logMessage){
+      save.log.unshift({
+        mission: game.title,
+        message: details.logMessage,
+        timestamp: Date.now()
+      });
+      save.log = save.log.slice(0, 30);
+    }
+
+    setHubSave(save);
+  }
+
+  function syncHubSaveFromExistingKeys(){
+    Object.keys(games).forEach(key => {
+      const game = games[key];
+      const completed = getStorageFlag(game.statusKey);
+      const started = getStorageFlag(game.startedKey);
+      const room = localStorage.getItem(game.roomKey);
+      if(completed || started || room){
+        recordDungeonProgress(key, { started, completed, room });
+      }
+    });
+  }
+
+  function toggleBriefingFolder(){
+    const folder = document.getElementById("briefingFolder");
+    const button = document.querySelector(".briefing-folder-header");
+    const toggle = document.getElementById("briefingFolderToggle");
+    if(!folder) return;
+
+    const isOpen = folder.classList.toggle("open");
+    folder.classList.toggle("collapsed", !isOpen);
+    if(button){ button.setAttribute("aria-expanded", isOpen ? "true" : "false"); }
+    if(toggle){ toggle.innerText = isOpen ? "Close" : "Open"; }
+    localStorage.setItem("microHub_briefingOpen", isOpen ? "true" : "false");
+  }
+
+  function restoreBriefingFolderState(){
+    const shouldOpen = localStorage.getItem("microHub_briefingOpen") === "true";
+    const folder = document.getElementById("briefingFolder");
+    const button = document.querySelector(".briefing-folder-header");
+    const toggle = document.getElementById("briefingFolderToggle");
+    if(!folder) return;
+    folder.classList.toggle("open", shouldOpen);
+    folder.classList.toggle("collapsed", !shouldOpen);
+    if(button){ button.setAttribute("aria-expanded", shouldOpen ? "true" : "false"); }
+    if(toggle){ toggle.innerText = shouldOpen ? "Close" : "Open"; }
+  }
+
+  function getSortedDungeonKeys(){
+    return Object.keys(games).sort((a, b) => (games[a].sequence || 999) - (games[b].sequence || 999));
+  }
+
   function pluralize(count, singular, plural){
     return count === 1 ? singular : plural;
   }
@@ -943,10 +1499,13 @@ function closeHelpModal(){
   function updateGameStatuses(){
     let clearedCount = 0;
     let contestedCount = 0;
-    const totalDungeons = Object.keys(games).length;
+    const sortedKeys = getSortedDungeonKeys();
+    const totalDungeons = sortedKeys.length;
 
-    Object.keys(games).forEach(key => {
+    sortedKeys.forEach(key => {
       const statusElement = document.getElementById("status-" + key);
+      const card = statusElement ? statusElement.closest(".game-card") : document.querySelector(".game-card." + key);
+      if(card){ card.classList.remove("restored", "contested", "unstable", "locked"); }
       if(!statusElement) return;
 
       const game = games[key];
@@ -957,41 +1516,128 @@ function closeHelpModal(){
       if(completed){
         statusElement.innerText = game.restoredText || "Cleared";
         statusElement.dataset.realmState = "restored";
+        if(card){ card.classList.add("restored"); }
         clearedCount++;
       } else if(started){
-        statusElement.innerText = room ? `${game.contestedText || "Contested"} · Room ${room}` : (game.contestedText || "Contested");
+        statusElement.innerText = room ? `${game.contestedText || "Active"} · Room ${room}` : (game.contestedText || "Active");
         statusElement.dataset.realmState = "contested";
+        if(card){ card.classList.add("contested"); }
         contestedCount++;
       } else {
-        statusElement.innerText = game.unstableText || "Unbeaten";
+        statusElement.innerText = game.unstableText || "Ready";
         statusElement.dataset.realmState = "unstable";
+        if(card){ card.classList.add("unstable"); }
       }
     });
 
-    const realmStatus = document.getElementById("realmStatusText");
-    const realmSubtext = document.getElementById("realmStatusSubtext");
+    updateBriefingSummary(clearedCount, contestedCount, totalDungeons);
+    updateDungeonNarrative(clearedCount, contestedCount, totalDungeons);
+  }
 
-    if(realmStatus){
-      realmStatus.innerText = `${clearedCount} of ${totalDungeons} dungeons cleared`;
+  function updateBriefingSummary(clearedCount, contestedCount, totalDungeons){
+    const title = document.getElementById("briefingFolderTitle");
+    const subtext = document.getElementById("briefingFolderSubtext");
+    const nextTitle = document.getElementById("nextDungeonTitle");
+    const nextReason = document.getElementById("nextDungeonReason");
+    const nextButton = document.getElementById("nextDungeonButton");
+
+    nextDungeonKey = getSortedDungeonKeys().find(key => !getStorageFlag(games[key].statusKey)) || null;
+
+    if(title){ title.innerText = `${clearedCount} of ${totalDungeons} ${pluralize(totalDungeons, "dungeon", "dungeons")} cleared`; }
+
+    if(!nextDungeonKey){
+      if(subtext){ subtext.innerText = "All dungeons cleared"; }
+      if(nextTitle){ nextTitle.innerText = "Micro Gauntlet Cleared"; }
+      if(nextReason){ nextReason.innerText = "Every dungeon has been beaten. The campaign is locked down."; }
+      if(nextButton){ nextButton.innerText = "No Dungeon Remaining"; nextButton.disabled = true; }
+      return;
     }
 
-    if(realmSubtext){
-      if(clearedCount === totalDungeons){
-        realmSubtext.innerText = "The micro campaign is cleared. Every dungeon has been beaten.";
-      } else if(clearedCount > 0 && contestedCount > 0){
-        realmSubtext.innerText =
-          `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared, ` +
-          `${contestedCount} ${pluralize(contestedCount, "dungeon", "dungeons")} contested. Finish the active runs to secure the campaign.`;
-      } else if(clearedCount > 0){
-        realmSubtext.innerText =
-          `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared. Keep pushing through the remaining dungeons.`;
-      } else if(contestedCount > 0){
-        realmSubtext.innerText =
-          `${contestedCount} ${pluralize(contestedCount, "dungeon", "dungeons")} contested. Complete the active run to mark it cleared.`;
-      } else {
-        realmSubtext.innerText = "The micro gauntlet system remains unbeaten. Complete each dungeon to secure the campaign.";
-      }
+    const nextGame = games[nextDungeonKey];
+    if(subtext){ subtext.innerText = `Next Dungeon: ${nextGame.title}`; }
+    if(nextTitle){ nextTitle.innerText = nextGame.title; }
+    if(nextReason){ nextReason.innerText = nextGame.nextReason || "Begin the next available dungeon."; }
+    if(nextButton){ nextButton.innerText = "Begin Next Dungeon"; nextButton.disabled = false; }
+  }
+
+  function updateDungeonNarrative(clearedCount, contestedCount, totalDungeons){
+    const narrative = document.getElementById("dungeonNarrativeText");
+    if(!narrative) return;
+
+    if(clearedCount === totalDungeons){
+      narrative.innerText = "The Micro Gauntlet is cleared. Every dungeon has been beaten. That is the sound of the system getting pinned to the mat.";
+      return;
     }
+
+    const activeKey = getSortedDungeonKeys().find(key => getStorageFlag(games[key].startedKey) && !getStorageFlag(games[key].statusKey));
+    if(activeKey){
+      narrative.innerText = games[activeKey].storyActive || "A dungeon is active. Finish the run.";
+      return;
+    }
+
+    if(nextDungeonKey){
+      narrative.innerText = games[nextDungeonKey].storyIntro || "Begin the next dungeon to secure the Micro Gauntlet.";
+      return;
+    }
+
+    narrative.innerText = `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared. Keep moving.`;
+  }
+
+  function launchNextDungeon(){
+    if(!nextDungeonKey) return;
+    selectGame(nextDungeonKey);
+  }
+
+  function renderDungeonLog(){
+    const target = document.getElementById("dungeonLogContent");
+    if(!target) return;
+
+    const save = getHubSave();
+    const log = save.log || [];
+
+    if(log.length === 0){
+      target.innerHTML = "No dungeon activity recorded yet.";
+      return;
+    }
+
+    target.innerHTML = log.map(entry => {
+      const date = new Date(entry.timestamp || Date.now()).toLocaleString();
+      return `<div class="dungeon-log-entry"><div class="dungeon-log-title">${entry.mission}</div><div>${entry.message}</div><div class="dungeon-log-meta">${date}</div></div>`;
+    }).join("");
+  }
+
+  function restoreDungeonFromCode(){
+    const selector = document.getElementById("recoveryDungeon");
+    const codeInput = document.getElementById("recoveryCode");
+    const message = document.getElementById("recoveryMessage");
+    if(!selector || !codeInput || !message) return;
+
+    const gameKey = selector.value;
+    const game = games[gameKey];
+    const enteredCode = codeInput.value.trim().toUpperCase();
+
+    if(!game){
+      message.innerText = "No dungeon selected.";
+      return;
+    }
+
+    if(enteredCode !== (game.recoveryCode || "").toUpperCase()){
+      message.innerText = "That recovery code does not match this dungeon.";
+      return;
+    }
+
+    localStorage.setItem(game.statusKey, "true");
+    localStorage.setItem(game.startedKey, "true");
+    localStorage.setItem(game.roomKey, "30");
+    recordDungeonProgress(gameKey, {
+      started: true,
+      completed: true,
+      room: "30",
+      logMessage: `${game.title} restored from recovery code.`
+    });
+    updateGameStatuses();
+    renderDungeonLog();
+    message.innerText = `${game.title} restored as cleared on this device.`;
   }
 
   
@@ -1004,6 +1650,15 @@ function selectGame(gameKey){
     localStorage.setItem("selectedDungeon", gameKey);
     localStorage.setItem("selectedMission", gameKey);
 
+    localStorage.setItem(games[gameKey].startedKey, "true");
+    recordDungeonProgress(gameKey, {
+      started: true,
+      completed: getStorageFlag(games[gameKey].statusKey),
+      room: localStorage.getItem(games[gameKey].roomKey),
+      logMessage: `${games[gameKey].title} opened from the Micro Test Prep hub.`
+    });
+    updateGameStatuses();
+
     stopMenuMusic();
     window.location.href = games[gameKey].file;
   }
@@ -1012,8 +1667,15 @@ function selectGame(gameKey){
   if(event.key === "Escape"){
     const helpModal = document.getElementById("helpModal");
 
+    const dungeonModal = document.getElementById("dungeonMenuModal");
+
     if(helpModal.classList.contains("active")){
       closeHelpModal();
+      return;
+    }
+
+    if(dungeonModal && dungeonModal.classList.contains("active")){
+      closeDungeonMenu();
       return;
     }
 
@@ -1025,4 +1687,5 @@ function selectGame(gameKey){
 </script>
 </body>
 </html>
+
 
