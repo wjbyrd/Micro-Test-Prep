@@ -1198,10 +1198,6 @@
 
   <button id="soundToggle" class="sound-toggle" onclick="toggleMenuMusic()" aria-label="Toggle menu music">Sound Off</button>
 
-  <button id="helpButton" class="help-button" onclick="openHelpModal()" aria-label="Open instructions">
-  How This Works
-  </button>
-
   <button id="dungeonMenuButton" class="dungeon-menu-button" onclick="openDungeonMenu()" aria-label="Open dungeon menu">
     Dungeon Menu
   </button>
@@ -1333,31 +1329,6 @@
       </section>
     </div>
   </main>
-
-<section id="helpModal" aria-label="Instructions dialog">
-  <div class="help-modal-card">
-    <div class="help-modal-header">
-      <h2 class="help-modal-title">How This Works</h2>
-      <button class="help-close-btn" onclick="closeHelpModal()" aria-label="Close instructions">Close ×</button>
-    </div>
-
-    <div class="help-modal-body">
-      <p>Choose a dungeon to begin reviewing.</p>
-
-      <p>Each dungeon focuses on a different part of the course and adapts to your performance as you play.</p>
-
-      <ul>
-        <li>Correct answers move you forward.</li>
-        <li>Missed questions may send you back or trigger review.</li>
-        <li>Boss rooms check whether you are ready to advance.</li>
-        <li>Completion is reported when you finish a dungeon</li>
-        <li>Progress is saved at your current room. You can close the browser and pick up where you last were.</li>
-      </ul>
-
-      <p>When you enter a dungeon, use your school email on that game’s start screen so your progress can be recorded.</p>
-    </div>
-  </div>
-</section>
 
 <section id="dungeonMenuModal" class="dungeon-menu-modal" aria-label="Dungeon menu dialog">
   <div class="dungeon-menu-card">
@@ -1497,11 +1468,35 @@
       unstableText: "Labyrinth Sealed",
       contestedText: "Labyrinth Active",
       restoredText: "Labyrinth Cleared",
-      artifacts: [
-        { key: "seal", img: "seal_of_preferences.png", title: "Seal of Preferences", text: "An ancient seal revealing the curves of desire. Where preferences meet the budget constraint, utility is maximized." },
-        { key: "prism", img: "prism_of_tradeoffs.png", title: "Prism of Tradeoffs", text: "A crystal that fractures a price change into its hidden forces: substitution toward cheaper goods and the pull of income on purchasing power." },
-        { key: "scepter", img: "scepter_of_elasticity.png", title: "Scepter of Elasticity", text: "The royal instrument of the Sovereign. It reveals how strongly quantity demanded responds when price changes." }
-      ]
+artifacts: [
+  {
+    key: "seal",
+    img: "seal_of_preferences.png",
+    title: "Seal of Preferences",
+    source: "Labyrinth of Choice",
+    meaning: "The Seal of Preferences represents consumer tastes, utility, and the way choices become meaningful only when preferences are constrained by income and prices.",
+    conceptPower: "Utility maximization occurs where the consumer reaches the highest attainable preference level given the budget constraint.",
+    whyItMatters: "Students often treat consumer choice like simple liking. The seal reminds them that preferences matter, but only within the limits created by prices and income."
+  },
+  {
+    key: "prism",
+    img: "prism_of_tradeoffs.png",
+    title: "Prism of Tradeoffs",
+    source: "Labyrinth of Choice",
+    meaning: "The Prism of Tradeoffs breaks a price change into its hidden forces: substitution toward the relatively cheaper good and the income effect created by changed purchasing power.",
+    conceptPower: "A price change affects quantity demanded through both substitution effects and income effects.",
+    whyItMatters: "Students often say quantity changes because price changed and stop there. The prism pushes them to explain the deeper mechanism behind the movement."
+  },
+  {
+    key: "scepter",
+    img: "scepter_of_elasticity.png",
+    title: "Scepter of Elasticity",
+    source: "Labyrinth of Choice",
+    meaning: "The Scepter of Elasticity represents responsiveness. It reveals whether buyers strongly change quantity demanded when price changes, or barely move at all.",
+    conceptPower: "Elasticity measures percentage responsiveness, especially how quantity demanded responds to percentage changes in price.",
+    whyItMatters: "Students often confuse slope with elasticity. The scepter reminds them that responsiveness depends on percentage changes, not just whether the curve looks steep or flat."
+  }
+]
     },
     vault: {
       title: "Strategic Vault",
@@ -1520,11 +1515,35 @@
       unstableText: "Vault Locked",
       contestedText: "Vault Contested",
       restoredText: "Vault Cleared",
-      artifacts: [
-        { key: "dice", img: "dice_of_probability.png", title: "Loaded Dice of Probability", text: "Expected value reveals the center of uncertainty. The payoff is never just the highest prize—it is the probability-weighted outcome." },
-        { key: "shield", img: "shield_of_risk_pooling.png", title: "Shield of Risk Pooling", text: "Risk does not vanish. It is pooled, priced, transferred, and managed by those who understand uncertainty." },
-        { key: "core", img: "core_of_equilibrium.png", title: "Core of Equilibrium", text: "Every strategy has a response. Equilibrium forms when no player can improve by changing course alone." }
-      ]
+     artifacts: [
+  {
+    key: "dice",
+    img: "dice_of_probability.png",
+    title: "Loaded Dice of Probability",
+    source: "Strategic Vault",
+    meaning: "The Loaded Dice of Probability represent uncertainty, risk, and the need to weigh outcomes by likelihood rather than by the most tempting payoff.",
+    conceptPower: "Expected value is the probability-weighted average of possible outcomes.",
+    whyItMatters: "Students often chase the biggest prize and ignore the odds. The dice remind them that a risky choice must be judged by both payoff and probability."
+  },
+  {
+    key: "shield",
+    img: "shield_of_risk_pooling.png",
+    title: "Shield of Risk Pooling",
+    source: "Strategic Vault",
+    meaning: "The Shield of Risk Pooling represents the way insurance spreads individual risk across a larger group so losses become more manageable.",
+    conceptPower: "Insurance works by pooling independent risks, pricing expected losses, and transferring risk from individuals to a broader group.",
+    whyItMatters: "Students often think insurance eliminates risk. It does not. The shield reminds them that risk is pooled, priced, and redistributed."
+  },
+  {
+    key: "core",
+    img: "core_of_equilibrium.png",
+    title: "Core of Equilibrium",
+    source: "Strategic Vault",
+    meaning: "The Core of Equilibrium represents strategic balance, where each player’s best response depends on what others are expected to do.",
+    conceptPower: "A Nash equilibrium occurs when no player can improve their payoff by changing strategy alone.",
+    whyItMatters: "Students often analyze choices as if each decision happens in isolation. The core reminds them that strategic outcomes depend on mutual response."
+  }
+]
     },
     foundry: {
       title: "The Foundry",
@@ -1544,10 +1563,34 @@
       contestedText: "Foundry Running",
       restoredText: "Foundry Cleared",
       artifacts: [
-        { key: "heart", img: "heart.png", title: "The Core of Margins", text: "The structure holds when marginal cost meets its limit. Push beyond it, and the system fractures." },
-        { key: "core", img: "core.png", title: "The Engine of Output", text: "Production responds to pressure. When conditions shift, output follows—whether you anticipate it or not." },
-        { key: "crown", img: "crown.png", title: "The Crown of Control", text: "Power lies in control over response. Price moves first. Quantity answers." }
-      ]
+  {
+    key: "heart",
+    img: "heart.png",
+    title: "The Core of Margins",
+    source: "The Foundry",
+    meaning: "The Core of Margins represents the firm’s decision point, where marginal cost and marginal revenue determine whether production should expand, contract, or stop.",
+    conceptPower: "Profit-maximizing firms compare marginal revenue and marginal cost when deciding output.",
+    whyItMatters: "Students often focus on total revenue or total cost alone. The core reminds them that the next unit is what drives the production decision."
+  },
+  {
+    key: "core",
+    img: "core.png",
+    title: "The Engine of Output",
+    source: "The Foundry",
+    meaning: "The Engine of Output represents production itself: inputs become output, but the relationship changes as fixed resources create diminishing returns.",
+    conceptPower: "Production depends on inputs, marginal product, and the short-run limits created by fixed factors.",
+    whyItMatters: "Students often assume more input always means proportionally more output. The engine reminds them that output responds to pressure, but not always evenly."
+  },
+  {
+    key: "crown",
+    img: "crown.png",
+    title: "The Crown of Control",
+    source: "The Foundry",
+    meaning: "The Crown of Control represents the firm’s power over quantity response in competitive markets, where price gives the signal and firms adjust output.",
+    conceptPower: "In perfect competition, firms are price takers and choose output where price equals marginal cost.",
+    whyItMatters: "Students often think firms simply choose any price they want. The crown reminds them that competitive firms respond to the market price instead of ruling over it."
+  }
+]
     },
     dominion: {
       title: "Dominion of Power",
@@ -1566,11 +1609,35 @@
       unstableText: "Dominion Unclaimed",
       contestedText: "Dominion Contested",
       restoredText: "Dominion Cleared",
-      artifacts: [
-        { key: "orb", img: "orb.png", title: "Orb of Equilibrium", text: "All markets are connected. Disturb one, and the system adjusts—whether you are prepared or not." },
-        { key: "crown", img: "crown_dop.png", title: "Crown of Dominion", text: "Power lies in control. Price is not given—it is set. Others respond." },
-        { key: "edge", img: "edge.png", title: "Edge of Strategy", text: "Every decision shapes the outcome. Anticipate the response—or be overtaken." }
-      ]
+     artifacts: [
+  {
+    key: "orb",
+    img: "orb.png",
+    title: "Orb of Equilibrium",
+    source: "Dominion of Power",
+    meaning: "The Orb of Equilibrium represents interconnected markets, where changes in one market ripple through prices, quantities, welfare, and resource allocation.",
+    conceptPower: "General equilibrium shows how markets interact rather than treating each market as isolated.",
+    whyItMatters: "Students often analyze one market like nothing else changes. The orb reminds them that economic pressure travels through the system."
+  },
+  {
+    key: "crown",
+    img: "crown_dop.png",
+    title: "Crown of Dominion",
+    source: "Dominion of Power",
+    meaning: "The Crown of Dominion represents market power, where firms are no longer passive price takers and can influence price by restricting output.",
+    conceptPower: "A monopolist chooses output where marginal revenue equals marginal cost, then charges the price consumers are willing to pay for that quantity.",
+    whyItMatters: "Students often confuse monopoly with simply being a big firm. The crown reminds them that market power changes price, output, and welfare."
+  },
+  {
+    key: "edge",
+    img: "edge.png",
+    title: "Edge of Strategy",
+    source: "Dominion of Power",
+    meaning: "The Edge of Strategy represents rivalry in imperfect competition, where firms must anticipate competitor reactions before making pricing, output, or product decisions.",
+    conceptPower: "Oligopoly and imperfect competition require strategic thinking because one firm’s decision changes the incentives facing others.",
+    whyItMatters: "Students often treat firms as if they act alone. The edge reminds them that in strategic markets, every move invites a response."
+  }
+]
     }
   };
 
@@ -1594,7 +1661,6 @@
   function enterHub(){
     document.getElementById("splashScreen").classList.add("hidden");
     document.getElementById("mainMenu").classList.add("active");
-    showHelpButton();
     showDungeonMenuButton();
     startMenuMusic();
   }
@@ -1606,22 +1672,6 @@
       input.value = savedEmail;
     }
   }
-
-function showHelpButton(){
-  const button = document.getElementById("helpButton");
-  if(button){
-    button.classList.add("visible");
-  }
-}
-
-function openHelpModal(){
-  document.getElementById("helpModal").classList.add("active");
-}
-
-function closeHelpModal(){
-  document.getElementById("helpModal").classList.remove("active");
-}
-
 
   function showDungeonMenuButton(){
     const button = document.getElementById("dungeonMenuButton");
@@ -2004,18 +2054,12 @@ function selectGame(gameKey){
   
  document.addEventListener("keydown", event => {
   if(event.key === "Escape"){
-    const helpModal = document.getElementById("helpModal");
     const artifactModal = document.getElementById("artifactModal");
 
     const dungeonModal = document.getElementById("dungeonMenuModal");
 
     if(artifactModal && artifactModal.classList.contains("active")){
       closeArtifactModal();
-      return;
-    }
-
-    if(helpModal.classList.contains("active")){
-      closeHelpModal();
       return;
     }
 
