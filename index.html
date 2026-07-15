@@ -1179,11 +1179,30 @@
   font-size:12px;
 }
 
+.achievement-summary{padding:16px; border:1px solid rgba(247,217,130,.20); border-radius:14px; background:rgba(247,217,130,.06); text-align:center; margin-bottom:14px;}
+.achievement-summary-label{font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,238,190,.60);}
+.achievement-summary-title{margin-top:4px; font-size:28px; font-weight:700; color:#fff;}
+.achievement-summary-text{margin-top:5px; font-size:13px; color:rgba(255,255,255,.68);}
+.achievement-progress-track{height:8px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.10); margin-top:12px;}
+.achievement-progress-fill{height:100%; background:linear-gradient(90deg, #f0c86a, #fb923c);}
+.achievement-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px;}
+.achievement-card{display:grid; grid-template-columns:48px 1fr; gap:10px; align-items:center; padding:12px; border:1px solid rgba(255,255,255,.14); border-radius:12px; background:rgba(0,0,0,.30); cursor:pointer;}
+.achievement-card.locked{opacity:.62; filter:grayscale(.75);}
+.achievement-card.unlocked{border-color:rgba(247,217,130,.42); background:rgba(247,217,130,.08);}
+.achievement-icon{width:48px; height:48px; display:grid; place-items:center; border-radius:12px; background:rgba(0,0,0,.35); color:#f0c86a; font-size:20px; font-weight:700; overflow:hidden;}
+.achievement-icon img{width:100%; height:100%; object-fit:contain; padding:4px;}
+.achievement-name{font-size:13px; font-weight:700; color:#fff;}
+.achievement-desc{margin-top:3px; font-size:12px; line-height:1.35; color:rgba(255,255,255,.68);}
+.achievement-status{margin-top:5px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,238,190,.62);}
+.micro-achievement-icon{width:96px; height:96px; display:grid; place-items:center; margin:0 auto 16px; border-radius:20px; background:rgba(247,217,130,.10); color:#f0c86a; font-size:42px; overflow:hidden;}
+.micro-achievement-icon img{width:100%; height:100%; object-fit:contain; padding:8px;}
+
 @media(max-width:680px){
   .briefing-folder-header{align-items:flex-start;}
   .briefing-folder-toggle{margin-top:2px;}
   .recovery-grid{grid-template-columns:1fr;}
   .artifact-grid{grid-template-columns:1fr;}
+  .achievement-grid{grid-template-columns:1fr;}
   .dungeon-menu-card{padding:20px;}
 }
 
@@ -1342,6 +1361,7 @@
       <button class="dungeon-menu-action" onclick="showDungeonPanel('dungeonLogPanel')">Dungeon Log</button>
       <button class="dungeon-menu-action" onclick="showDungeonPanel('artifactVaultPanel')">Artifact Vault</button>
       <button class="dungeon-menu-action" onclick="showDungeonPanel('recoveryPanel')">Recover Progress</button>
+      <button class="dungeon-menu-action" onclick="showDungeonPanel('achievementsPanel')">Achievements</button>
       <button class="dungeon-menu-action" onclick="toggleMenuMusic()">Toggle Sound</button>
     </div>
 
@@ -1379,6 +1399,24 @@
       </div>
       <button class="next-dungeon-button" style="margin-top:12px;" onclick="restoreDungeonFromCode()">Restore Dungeon</button>
       <div id="recoveryMessage" class="recovery-message"></div>
+    </div>
+
+    <div id="achievementsPanel" class="dungeon-panel">
+      <div id="achievementsContent">Achievement records loading...</div>
+    </div>
+  </div>
+</section>
+
+<section id="achievementModal" class="artifact-modal" aria-label="Achievement detail dialog">
+  <div class="artifact-modal-card">
+    <div class="artifact-modal-header">
+      <h2 id="achievementModalTitle" class="artifact-modal-title">Achievement</h2>
+      <button class="help-close-btn" onclick="closeAchievementModal()" aria-label="Close achievement view">Close Ã—</button>
+    </div>
+    <div class="artifact-modal-body">
+      <div id="achievementModalIcon" class="micro-achievement-icon" aria-hidden="true"></div>
+      <div id="achievementModalStatus" class="artifact-modal-source"></div>
+      <div id="achievementModalDescription" class="artifact-modal-meaning"></div>
     </div>
   </div>
 </section>
@@ -1681,6 +1719,7 @@ artifacts: [
   function openDungeonMenu(){
     renderDungeonLog();
     renderArtifactVault();
+    renderAchievements();
     document.getElementById("dungeonMenuModal").classList.add("active");
   }
 
@@ -1694,6 +1733,7 @@ artifacts: [
     if(panel){ panel.classList.add("active"); }
     if(panelId === "dungeonLogPanel"){ renderDungeonLog(); }
     if(panelId === "artifactVaultPanel"){ renderArtifactVault(); }
+    if(panelId === "achievementsPanel"){ renderAchievements(); }
   }
 
   function getHubSave(){
@@ -1866,6 +1906,90 @@ artifacts: [
     }
 
     narrative.innerText = `${clearedCount} ${pluralize(clearedCount, "dungeon", "dungeons")} cleared. Keep moving.`;
+  }
+
+  const MICRO_ACHIEVEMENTS = [
+    { id:"first", title:"First Choice", description:"Clear one dungeon.", icon:"prism_of_tradeoffs.png", unlocked:stats => stats.completed >= 1 },
+    { id:"clear", title:"Micro Gauntlet", description:"Clear every dungeon.", icon:"core_of_equilibrium.png", unlocked:stats => stats.completed >= stats.total && stats.total > 0 },
+    { id:"streak", title:"Unbroken Hand", description:"Reach a streak of 20.", icon:"heart.png", unlocked:stats => stats.bestStreak >= 20 },
+    { id:"timed", title:"Trial by Clock", description:"Reach Room 30 in Timed Trial with at least 80 percent accuracy.", icon:"dice_of_probability.png", unlocked:stats => stats.timedRoom >= 30 && stats.timedAccuracy >= 80 },
+    { id:"exam", title:"Exam Survivor", description:"Complete an Exam Drill session.", icon:"shield_of_risk_pooling.png", unlocked:stats => stats.examSessions >= 1 },
+    { id:"legend", title:"Legend Walker", description:"Complete one dungeon in Legendary Mode.", icon:"crown.PNG", unlocked:stats => stats.legendaryCompletions >= 1 },
+    { id:"perfect", title:"Perfect Equilibrium", description:"Defeat all three bosses in one dungeon without a wrong answer.", icon:"edge.png", unlocked:stats => stats.perfectBossRuns >= 1 },
+    { id:"return", title:"Return and Rebuild", description:"Resume a saved run and finish it.", icon:"seal_of_preferences.png", unlocked:stats => stats.resumeFinishes >= 1 },
+    { id:"vault", title:"Full Vault", description:"Unlock every dungeon artifact set.", icon:"orb.png", unlocked:stats => stats.artifactsCollected >= stats.totalArtifacts && stats.totalArtifacts > 0 },
+    { id:"proof", title:"Proof of Choice", description:"Answer 400 questions correctly.", icon:"scepter_of_elasticity.png", unlocked:stats => stats.totalCorrect >= 400 }
+  ];
+
+  function getMicroStorageEntries(){
+    const entries = [];
+    for(let i = 0; i < localStorage.length; i++){
+      const key = localStorage.key(i);
+      entries.push({ lowerKey:String(key || "").toLowerCase(), value:localStorage.getItem(key) });
+    }
+    return entries;
+  }
+
+  function getMicroAchievementStats(){
+    const keys = getSortedDungeonKeys();
+    const entries = getMicroStorageEntries();
+    const maxValue = matcher => entries.reduce((max, entry) => {
+      const value = Number(entry.value);
+      return matcher(entry.lowerKey) && Number.isFinite(value) ? Math.max(max, value) : max;
+    }, 0);
+    const trueCount = matcher => entries.filter(entry => matcher(entry.lowerKey) && (entry.value === "true" || entry.value === "1")).length;
+    const completed = keys.filter(key => getStorageFlag(games[key].statusKey)).length;
+    const totalArtifacts = keys.reduce((total, key) => total + ((games[key].artifacts || []).length), 0);
+    const artifactsCollected = keys.reduce((total, key) => total + (getStorageFlag(games[key].statusKey) ? (games[key].artifacts || []).length : 0), 0);
+    return {
+      total:keys.length,
+      completed,
+      legendaryCompletions:keys.filter(key => localStorage.getItem(`microHub_${key}_legendary_complete`) === "true" || localStorage.getItem(`${key}LegendaryComplete`) === "true").length,
+      bestStreak:maxValue(key => key.includes("maxstreak") || key.includes("beststreak") || key.includes("timedlaststreak")),
+      timedRoom:maxValue(key => key.includes("timed") && key.includes("room")),
+      timedAccuracy:maxValue(key => key.includes("timed") && key.includes("accuracy")),
+      examSessions:trueCount(key => key.includes("exam") && (key.includes("complete") || key.includes("survivor"))),
+      perfectBossRuns:trueCount(key => key.includes("perfect") && (key.includes("boss") || key.includes("calibration")) && (key.includes("complete") || key.includes("run"))),
+      resumeFinishes:trueCount(key => (key.includes("resume") || key.includes("rebuild")) && (key.includes("finish") || key.includes("complete"))),
+      totalCorrect:maxValue(key => key.includes("correcttotal") || key.includes("totalcorrect") || key.includes("correctanswerslifetime")),
+      totalArtifacts,
+      artifactsCollected
+    };
+  }
+
+  function renderAchievements(){
+    const container = document.getElementById("achievementsContent");
+    if(!container) return;
+    const stats = getMicroAchievementStats();
+    const achievements = MICRO_ACHIEVEMENTS.map(item => ({ ...item, unlocked:!!item.unlocked(stats) }));
+    const unlockedCount = achievements.filter(item => item.unlocked).length;
+    const progressPct = Math.round((unlockedCount / achievements.length) * 100);
+    const cards = achievements.map(item => `
+      <div class="achievement-card ${item.unlocked ? "unlocked" : "locked"}" onclick="openMicroAchievementModal('${item.id}')" role="button" tabindex="0" aria-label="Open achievement ${item.title}" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); openMicroAchievementModal('${item.id}'); }">
+        <div class="achievement-icon" aria-hidden="true"><img src="${item.icon}" alt=""></div>
+        <div><div class="achievement-name">${item.title}</div><div class="achievement-desc">${item.description}</div><div class="achievement-status">${item.unlocked ? "Unlocked" : "Locked"}</div></div>
+      </div>`).join("");
+    container.innerHTML = `<div class="achievement-summary"><div class="achievement-summary-label">Achievement Progress</div><div class="achievement-summary-title">${unlockedCount}/${achievements.length}</div><div class="achievement-summary-text">${stats.completed}/${stats.total} dungeons cleared &middot; ${stats.artifactsCollected}/${stats.totalArtifacts} artifacts secured</div><div class="achievement-progress-track" aria-hidden="true"><div class="achievement-progress-fill" style="width:${progressPct}%"></div></div></div><div class="achievement-grid">${cards}</div>`;
+  }
+
+  function openMicroAchievementModal(id){
+    const item = MICRO_ACHIEVEMENTS.find(achievement => achievement.id === id);
+    if(!item) return;
+    const stats = getMicroAchievementStats();
+    const unlocked = !!item.unlocked(stats);
+    const modal = document.getElementById("achievementModal");
+    const icon = document.getElementById("achievementModalIcon");
+    if(!modal || !icon) return;
+    document.getElementById("achievementModalTitle").textContent = item.title;
+    document.getElementById("achievementModalStatus").textContent = unlocked ? "Unlocked" : "Locked";
+    document.getElementById("achievementModalDescription").textContent = item.description;
+    icon.innerHTML = `<img src="${item.icon}" alt="">`;
+    modal.classList.add("active");
+  }
+
+  function closeAchievementModal(){
+    const modal = document.getElementById("achievementModal");
+    if(modal){ modal.classList.remove("active"); }
   }
 
   function launchNextDungeon(){
@@ -2053,13 +2177,19 @@ function selectGame(gameKey){
   }
   
  document.addEventListener("keydown", event => {
-  if(event.key === "Escape"){
+ if(event.key === "Escape"){
     const artifactModal = document.getElementById("artifactModal");
+    const achievementModal = document.getElementById("achievementModal");
 
     const dungeonModal = document.getElementById("dungeonMenuModal");
 
     if(artifactModal && artifactModal.classList.contains("active")){
       closeArtifactModal();
+      return;
+    }
+
+    if(achievementModal && achievementModal.classList.contains("active")){
+      closeAchievementModal();
       return;
     }
 
@@ -2076,7 +2206,5 @@ function selectGame(gameKey){
 </script>
 </body>
 </html>
-
-
 
 
